@@ -117,10 +117,10 @@ export default component$(() => {
       step: stepFunction,
     };
     // Initiate ProgressBar.js passing in config, to draw the progress chart
-    import('progressbar.js').then((ProgressBar) => {
-      const line = new ProgressBar.SemiCircle(target, progressConfig);
-      line.animate(percentage / 100);
-    });
+    // import('progressbar.js').then((ProgressBar) => {
+    //   const line = new ProgressBar.SemiCircle(target, progressConfig);
+    //   line.animate(percentage / 100);
+    // });
   });
 
   /**

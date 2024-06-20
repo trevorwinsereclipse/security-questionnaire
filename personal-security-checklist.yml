@@ -93,10 +93,10 @@
       I enable full disk encryption and secure the machine’s boot process using a robust password.
 
   - point: VPN
-      priority: Essential
-      details: >-
-        I use a reputable VPN, especially on public Wi-Fi networks, and also on home networks if their security 
-        is uncertain.
+    priority: Essential
+    details: >-
+      I use a reputable VPN, especially on public Wi-Fi networks, and also on home networks if their security 
+      is uncertain.
 
   - point: Backup Rule
     priority: Essential

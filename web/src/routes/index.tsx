@@ -7,14 +7,14 @@ import Progress from "~/components/psc/progress";
 
 import { ChecklistContext } from '~/store/checklist-context';
 
-import { useChecklist } from '~/store/local-checklist-store';
+
 
 export default component$(() => { 
 
   const checklists = useContext(ChecklistContext);
-  const localChecklist = useChecklist();
-  // localChecklist.checklist.checklist
-  // checklists.value
+
+  console.log(checklists.value)
+  
   return (
     <>
       <Hero />
