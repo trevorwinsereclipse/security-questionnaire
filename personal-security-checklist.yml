@@ -1,9 +1,10 @@
 - title: Accounts
   slug: accounts
   description: Securing Developer Accounts
-  icon: 
+  icon: password
   color: yellow
-  intro: 
+  intro: >-
+    Keeping your account secure is essential to preventing attacks. All of the practices mentioned provide meaningful methods of account security.
   checklist:
   - point: Strong, Unique Passwords
     priority: Essential
@@ -29,22 +30,24 @@
     priority: Essential
     details: >-
       I do not use of SMS and Email for MFA as it is discouraged due to their susceptibility to security vulnerabilities.
-
+  softwareLinks:
+    - title: Privacy Browsers
+      url: https://test.com
+      
 - title: Machine
   slug: machine
   description: Securing Development Machines
   icon: 
   color: emerald
-  intro: 
+  intro: >-
+    Keeping your machine secure is essential to preventing attacks. All of the practices mentioned provide 
+    meaningful methods of account security.
   checklist:
   - point: Official Installation
     priority: Essential
     details: >-
-      I install applications from official app stores/package managers whenever possible. Official repositories vet applications for security before distribution.
-  - point: I install applications from official app stores/package managers whenever possible. Official repositories vet applications for security before distribution.
-    priority: Essential
-    details: >-
-      I avoid installing applications manually whenever possible.
+      I install applications from official app stores/package managers whenever possible. Official repositories 
+      vet applications for security before distribution.
 
   - point: Installation Threats
     priority: Essential
@@ -54,27 +57,32 @@
   - point: Firewall / Antivirus
     priority: Essential
     details: >-
-      I activate the operating system's firewall and use reputable antivirus/antimalware software, keeping them updated to protect against new threats.
+      I activate the operating system's firewall and use reputable antivirus/antimalware software, keeping them 
+      updated to protect against new threats.
 
   - point: Phishing and Account Separation
     priority: Essential
     details: >-
-      I am trained to recognize phishing attempts and employ safe browsing practices. I utilize different browsers or browser profiles for different activities (personal/social versus development).
+      I am trained to recognize phishing attempts and employ safe browsing practices. I utilize different browsers 
+      or browser profiles for different activities (personal/social versus development).
 
   - point: Extensions
     priority: Essential
     details: >-
-      I only install extensions from reputable developers and remove any unused extensions to minimize the attack surface.
+      I only install extensions from reputable developers and remove any unused extensions to minimize the attack 
+      surface.
 
   - point: Physical Access
     priority: Essential
     details: >-
-      The physical access to my development machines are secured: I never leave them unattended or unlocked. Furthermore, I power off my machines before being left unattended.
+      The physical access to my development machines are secured: I never leave them unattended or unlocked. 
+      Furthermore, I power off my machines before being left unattended.
 
   - point: Ports and Public Sockets
     priority: Essential
     details: >-
-      I cover unused USB/Ethernet ports and avoid using public USB sockets, charging cables not sourced from reputable providers, and untrusted network connections, both wireless and wired.
+      I cover unused USB/Ethernet ports and avoid using public USB sockets, charging cables not sourced from 
+      reputable providers, and untrusted network connections, both wireless and wired.
 
   - point: Full Disk Encryption
     priority: Essential
@@ -84,29 +92,38 @@
   - point: VPN
       priority: Essential
       details: >-
-        I use a reputable VPN, especially on public Wi-Fi networks, and also on home networks if their security is uncertain.
+        I use a reputable VPN, especially on public Wi-Fi networks, and also on home networks if their security 
+        is uncertain.
 
   - point: Backup Rule
     priority: Essential
     details: >-
-      I perform regular, incremental backups of the entire machine following the 3/2/1 backup rule: three copies of my data, two local on different devices, and one stored off-site. Backups shall be encrypted.
+      I perform regular, incremental backups of the entire machine following the 3/2/1 backup rule: three copies 
+      of my data, two local on different devices, and one stored off-site. Backups shall be encrypted.
+  softwareLinks:
+    - title: Privacy Browsers
+      url: https://test.com
 
 - title: Environment
   slug: environment
   description: Securing the Development Environment
   icon: 
   color: teal
-  intro: 
+  intro: >-
+    Keeping your environment secure is essential to preventing attacks. All of the practices mentioned provide 
+    meaningful methods of account security.
   checklist:
   - point: IDE
     priority: Essential
     details: >-
-      I opt for reputable IDEs and ensure the security of cloud-based IDEs through regular updates to the infrastructure and vulnerability assessments.
+      I opt for reputable IDEs and ensure the security of cloud-based IDEs through regular updates to the 
+      infrastructure and vulnerability assessments.
 
   - point: Plugins
     priority: Essential
     details: >-
-      I verify the source of plugins prior to installation, and conduct regular audits of installed plugins for their utility and updates.
+      I verify the source of plugins prior to installation, and conduct regular audits of installed plugins for 
+      their utility and updates.
     
   - point: Audit Plugins
     priority: Essential
@@ -116,9 +133,13 @@
   - point: Secret Storage
     priority: Essential
     details: >-
-      I do not store my secrets in readable or easily accessible files. I use local secret scanning tools to identify and secure secrets stored in shell profiles and other configuration files.
+      I do not store my secrets in readable or easily accessible files. I use local secret scanning tools to 
+      identify and secure secrets stored in shell profiles and other configuration files.
           
   - point: Secret Scanning
     priority: Essential
     details: >-
       I regularly scan for secrets in shell history.
+  softwareLinks:
+    - title: Privacy Browsers
+      url: https://test.com
