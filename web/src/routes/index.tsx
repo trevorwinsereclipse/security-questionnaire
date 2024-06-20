@@ -13,8 +13,6 @@ export default component$(() => {
 
   const checklists = useContext(ChecklistContext);
 
-  console.log(checklists.value)
-  
   return (
     <>
       <Hero />
