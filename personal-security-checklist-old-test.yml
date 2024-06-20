@@ -10,13 +10,8 @@
   - point: Use a Strong Password
     priority: Essential
     details: >-
-      If your password is too short, or contains dictionary words, places or names- then it can be easily
-      cracked through brute force, or guessed by someone. The easiest way to make a strong password, is by
-      making it long (12+ characters)- consider using a 'passphrase', made up of many words. Alternatively,
-      use a password generator to create a long, strong random password. Have a play with
-      [HowSecureIsMyPassword.net](https://howsecureismypassword.net), to get an idea of how quickly common
-      passwords can be cracked. Read more about creating strong passwords:
-      [securityinabox.org](https://securityinabox.org/en/passwords/passwords-and-2fa/)
+      I use passwords that are both strong and unique for each account. A minimum length of 15 characters is 
+      recommended, prioritizing length over complexity.
 
   - point: Don't reuse Passwords
     priority: Essential
