@@ -4,12 +4,14 @@
   icon: password
   color: yellow
   intro: >-
-    Keeping your account secure is essential to preventing attacks. All of the practices mentioned provide meaningful methods of account security.
+    Keeping your account secure is essential to preventing attacks. All of the practices mentioned provide meaningful 
+    methods of account security.
   checklist:
   - point: Strong, Unique Passwords
     priority: Essential
     details: >-
-      I use passwords that are both strong and unique for each account. A minimum length of 15 characters is recommended, prioritizing length over complexity.
+      I use passwords that are both strong and unique for each account. A minimum length of 15 characters is 
+      recommended, prioritizing length over complexity.
 
   - point: Password Managers
     priority: Essential
@@ -29,11 +31,12 @@
   - point: SMS and Email Authentication
     priority: Essential
     details: >-
-      I do not use of SMS and Email for MFA as it is discouraged due to their susceptibility to security vulnerabilities.
+      I do not use of SMS and Email for MFA as it is discouraged due to their susceptibility to security 
+      vulnerabilities.
   softwareLinks:
     - title: Privacy Browsers
       url: https://test.com
-      
+
 - title: Machine
   slug: machine
   description: Securing Development Machines
