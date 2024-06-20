@@ -52,6 +52,7 @@ export default component$((props: { section: Section }) => {
     return marked.parse(text || '', { async: false }) as string || '';
   };
 
+  // Ignore feature removed (all statements must be answered)
   const isIgnored = (pointId: string) => {
     return ignored.value[pointId] || false;
   };
@@ -113,6 +114,7 @@ export default component$((props: { section: Section }) => {
     }
   });
 
+  // Filter feature removed (over-engineered questionnaire) 
   const resetFilters = $(() => {
     checklist.value = props.section.checklist;
     sortState.column = '';
@@ -152,79 +154,9 @@ export default component$((props: { section: Section }) => {
         <progress class="progress w-64" value={percent} max="100"></progress>
         <p class="text-xs text-center">
           {done} out of {total} ({percent}%)
-          complete, {disabled} ignored</p>
-      </div>
-
-      <div class="flex flex-wrap gap-2 justify-end my-4">
-        {(sortState.column || JSON.stringify(filterState) !== JSON.stringify(originalFilters)) && (
-          <button class="btn btn-sm hover:btn-primary" onClick$={resetFilters}>
-            <Icon width={18} height={16} icon="clear"/>
-            Reset Filters
-          </button>
-        )}
-        <button class="btn btn-sm hover:btn-primary" onClick$={() => { showFilters.value = !showFilters.value; }}>
-          <Icon width={18} height={16} icon="filters"/>
-          {showFilters.value ? 'Hide' : 'Show'} Filters
-        </button>
+          complete</p>
       </div>
     </div>
-
-    {showFilters.value && (
-      <div class="flex flex-wrap justify-between bg-base-100 rounded px-4 py-1 transition-all"
-        style={{ opacity: stage.value === "enterTo" ? 1 : 0, height: stage.value === "enterTo" ? 'auto' : 0 }}> 
-        {/* Filter by completion */}
-        <div class="flex justify-end items-center gap-1">
-          <p class="font-bold text-sm">Show</p>
-          <label onClick$={() => (filterState.show = 'all')}
-            class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">All</span> 
-            <input type="radio" name="show" class="radio radio-sm checked:radio-info" checked />
-          </label>
-          <label onClick$={() => (filterState.show = 'remaining')}
-            class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Remaining</span> 
-            <input type="radio" name="show" class="radio radio-sm checked:radio-error" />
-          </label>
-          <label onClick$={() => (filterState.show = 'completed')}
-            class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Completed</span> 
-            <input type="radio" name="show" class="radio radio-sm checked:radio-success" />
-          </label>
-        </div>
-        {/* Filter by level */}
-        <div class="flex justify-end items-center gap-1">
-          <p class="font-bold text-sm">Filter</p>
-          <label class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Basic</span> 
-            <input
-              type="checkbox"
-              checked={filterState.levels.essential}
-              onChange$={() => (filterState.levels.essential = !filterState.levels.essential)}
-              class="checkbox checkbox-sm checked:checkbox-success"
-            />
-          </label>
-          <label class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Optional</span> 
-            <input
-              type="checkbox"
-              checked={filterState.levels.optional}
-              onChange$={() => (filterState.levels.optional = !filterState.levels.optional)}
-              class="checkbox checkbox-sm checked:checkbox-warning"
-            />
-          </label>
-          <label
-            class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Advanced</span> 
-            <input
-              type="checkbox"
-              checked={filterState.levels.advanced}
-              class="checkbox checkbox-sm checked:checkbox-error"
-              onChange$={() => (filterState.levels.advanced = !filterState.levels.advanced)}
-            />
-          </label>
-        </div>
-      </div>
-    )}
 
     <table class="table">
       <thead>
@@ -253,13 +185,11 @@ export default component$((props: { section: Section }) => {
           const badgeColor = getBadgeClass(item.priority);
           const itemId = generateId(item.point);
           const isItemCompleted = isChecked(itemId);
-          const isItemIgnored = isIgnored(itemId);
           return (
             <tr key={index} class={[
               'rounded-sm transition-all',
               isItemCompleted ? `bg-${badgeColor} bg-opacity-10` : '',
-              isItemIgnored? 'bg-neutral bg-opacity-15' : '',
-              !isItemIgnored && !isItemCompleted ? `hover:bg-opacity-5 hover:bg-${badgeColor}` : '',
+              !isItemCompleted ? `hover:bg-opacity-5 hover:bg-${badgeColor}` : '',
               ]}>
               <td class="text-center">
                 <input
@@ -267,34 +197,17 @@ export default component$((props: { section: Section }) => {
                   class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
                   id={`done-${itemId}`}
                   checked={isChecked(itemId)}
-                  disabled={isIgnored(itemId)}
                   onClick$={() => {
                     const data = completed.value;
                     data[itemId] = !data[itemId];
                     setCompleted(data);
                   }}
                 />
-                <label for={`ignore-${itemId}`} class="text-small block opacity-50 mt-2">Ignore</label>
-                <input
-                  type="checkbox"
-                  id={`ignore-${itemId}`}
-                  class={`toggle toggle-xs toggle-${badgeColor}`}
-                  checked={isIgnored(itemId)}
-                  onClick$={() => {
-                    const ignoredData = ignored.value;
-                    ignoredData[itemId] = !ignoredData[itemId];
-                    setIgnored(ignoredData);
-
-                    const completedData = completed.value;
-                    completedData[itemId] = false;
-                    setCompleted(completedData);
-                  }}
-                />
               </td>
               <td>
                 <label
                   for={`done-${itemId}`}
-                  class={`text-base font-bold ${isIgnored(itemId) ? 'line-through' : 'cursor-pointer'}`}>
+                  class={"text-base font-bold cursor-pointer"}>
                   {item.point}
                 </label>
               </td>
