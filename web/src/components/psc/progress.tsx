@@ -46,12 +46,8 @@ export default component$(() => {
       section.checklist.forEach((item) => {
         const id = item.point.toLowerCase().replace(/ /g, '-');
         const isComplete = checkedItems.value[id];
-        const isIgnored = ignoredItems.value[id];
         if (isComplete) {
           totalComplete++;
-        }
-        if (isIgnored) {
-          totalItems--;
         }
       });
     });
@@ -310,40 +306,9 @@ export default component$(() => {
           max={totalProgress.value.outOf}>
         </progress>
       </div>
-    
-      {/* Completion per level */}
-      <div class="carousel rounded-box">
-      {items.map((item) => (
-        <div
-          key={item.id}
-          class="flex flex-col justify-items-center carousel-item w-20 p-4
-                bg-front shadow-md mx-2.5 rounded-box">
-          <div class="relative" id={item.id}></div>
-          <p class="text-center">{item.label}</p>
-        </div>
-        ))}
-      </div>
-      {/* Something ??? */}
-      <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
-        <p class="text-sm opacity-80 mb-2">
-          Next up, consider switching to more secure and
-          privacy-respecting apps and services.
-        </p>
-        <p class="text-lg">
-          View our directory of recommended software,
-          at <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
-        </p>
-      </div>
-    </div>
-
-    {/* Radar Chart showing total progress per category and level */}
-    <div class="rounded-box bg-front shadow-md w-96 p-4">
-      <canvas ref={radarChart} id="myChart"></canvas>
-    </div>
-
-    <div class="justify-center flex-col items-center gap-6 hidden xl:flex">
+      <div class="justify-center flex-col items-center gap-6 hidden xl:flex">
       {/* Remaining Tasks */}
-      <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
+      <div class="p-4 rounded-box bg-front shadow-md w-96">
         <ul>
           { checklists.value.map((section: Section, index: number) => (
               <li key={index}>
@@ -370,6 +335,37 @@ export default component$(() => {
         </ul>
       </div>
     </div>
+      {/* Completion per level */}
+      {/* <div class="carousel rounded-box">
+      {items.map((item) => (
+        <div
+          key={item.id}
+          class="flex flex-col justify-items-center carousel-item w-20 p-4
+                bg-front shadow-md mx-2.5 rounded-box">
+          <div class="relative" id={item.id}></div>
+          <p class="text-center">{item.label}</p>
+        </div>
+        ))}
+      </div> */}
+      {/* Something ??? */}
+      {/* <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
+        <p class="text-sm opacity-80 mb-2">
+          Next up, consider switching to more secure and
+          privacy-respecting apps and services.
+        </p>
+        <p class="text-lg">
+          View our directory of recommended software,
+          at <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
+        </p>
+      </div> */}
+    </div>
+
+    {/* Radar Chart showing total progress per category and level */}
+    <div class="rounded-box bg-front shadow-md w-96 p-4">
+      <canvas ref={radarChart} id="myChart"></canvas>
+    </div>
+
+    
   </div>
   );
 });

@@ -85,7 +85,7 @@ export default component$((props: { section: Section }) => {
             return 2;
           }
           return isChecked(generateId(item.point)) ? 0 : 1;
-        case 'advice':
+        case 'topic':
           return item.point;
         case 'level':
           return ['essential', 'optional', 'advanced'].indexOf(item.priority.toLowerCase());
@@ -163,8 +163,7 @@ export default component$((props: { section: Section }) => {
         <tr>
           { [
             { id: 'done', text: 'Done?'},
-            { id: 'advice', text: 'Advice' },
-            { id: 'level', text: 'Level' }
+            { id: 'topic', text: 'Topic' }
           ].map((item) => (
             <th
               key={item.id}
@@ -211,11 +210,11 @@ export default component$((props: { section: Section }) => {
                   {item.point}
                 </label>
               </td>
-              <td>
+              {/* <td>
                 <div class={`badge gap-2 badge-${badgeColor}`}>
                   {item.priority}
                 </div>
-              </td>
+              </td> */}
               <td class={styles.checklistItemDescription} dangerouslySetInnerHTML={parseMarkdown(item.details)}></td>
             </tr>
           )}

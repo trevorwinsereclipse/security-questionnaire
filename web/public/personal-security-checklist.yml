@@ -1,7 +1,7 @@
 - title: Accounts
   slug: accounts
   description: Securing Developer Accounts
-  icon: password
+  icon: account
   color: yellow
   intro: >-
     Keeping your account secure is essential to preventing attacks. All of the practices mentioned provide meaningful 
@@ -40,7 +40,7 @@
 - title: Machine
   slug: machine
   description: Securing Development Machines
-  icon: 
+  icon: machine
   color: emerald
   intro: >-
     Keeping your machine secure is essential to preventing attacks. All of the practices mentioned provide 
@@ -110,7 +110,7 @@
 - title: Environment
   slug: environment
   description: Securing the Development Environment
-  icon: 
+  icon: environment
   color: teal
   intro: >-
     Keeping your environment secure is essential to preventing attacks. All of the practices mentioned provide 
