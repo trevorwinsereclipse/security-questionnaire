@@ -40,7 +40,7 @@ export default component$(() => {
           </div> 
           <a href="/" class="btn btn-ghost text-xl flex capitalize">
             <label for="my-drawer-3" aria-label="open sidebar" class="tooltip tooltip-bottom" data-tip="View all Pages"><Icon class="mr-2" icon="shield" width={28} height={28}  /></label>
-            <h1>Digital Defense</h1>
+            <h1>Security Questionnaire</h1>
           </a>
         </div>
         <div class="flex-none hidden md:flex">
@@ -63,12 +63,12 @@ export default component$(() => {
                 </ul>
               </details>
             </li>
-            <li>
+            {/* <li>
               <a href="https://github.com/lissy93/personal-security-checklist"
                 class="tooltip flex tooltip-bottom" data-tip="View / Edit Source & Data">
                 <Icon icon="github" width={16} height={16}  />GitHub
               </a>
-            </li>
+            </li> */}
           </ul>
           <div class="tooltip tooltip-bottom" data-tip="Theme">
             <label class="cursor-pointer grid place-items-center">
@@ -99,12 +99,12 @@ export default component$(() => {
         <ul class="rounded-box menu p-4 w-80 min-h-full bg-base-200">
           <h2 class="flex text-primary">
           <Icon class="mr-2" icon="shield" width={16} height={16}  />
-            Digital Defense
+            Security Questionnaire
           </h2>
           <li><a href="/"><Icon class="mr-2" icon="homepage" width={16} height={16}  />Home</a></li>
-          <li><a href="https://github.com/lissy93/personal-security-checklist">
+          {/* <li><a href="https://github.com/lissy93/personal-security-checklist">
             <Icon class="mr-2" icon="github" width={16} height={16}  />GitHub</a>
-          </li>
+          </li> */}
           <li>
             <a href="/checklist"><Icon class="mr-2" icon="all" width={16} height={16} />Checklists</a>
             <ul>
