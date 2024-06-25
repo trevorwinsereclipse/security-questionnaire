@@ -7,11 +7,9 @@ import { marked } from "marked";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
 import styles from './psc.module.css';
 
-
 export default component$((props: { section: Section }) => {
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
-  // const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
 
   const showFilters = useSignal(false);
   const { stage } = useCSSTransition(showFilters, { timeout: 300 });
@@ -31,6 +29,7 @@ export default component$((props: { section: Section }) => {
 
   const filterState = useStore(originalFilters);
 
+  // Determines color of checkbox
   const getBadgeClass = (priority: Priority, precedeClass: string = '') => {
     switch (priority.toLocaleLowerCase()) {
       case 'essential':
@@ -52,21 +51,27 @@ export default component$((props: { section: Section }) => {
     return marked.parse(text || '', { async: false }) as string || '';
   };
 
-  // Ignore feature removed (all statements must be answered)
-  // const isIgnored = (pointId: string) => {
-  //   return ignored.value[pointId] || false;
-  // };
-  
-
-  const isChecked = (pointId: string) => {
-    // if (isIgnored(pointId)) return false;
-    return completed.value[pointId] || false;
+  const isChecked = (pointId: string, column: number) => {
+    return completed.value[pointId] && completed.value[pointId] === column;
   };
+
+  const handleCheckboxClick = $((pointId: string, column: number) => {
+    const data = { ...completed.value };
+
+    if (data[pointId] === column) {
+      // If the same checkbox is clicked again, remove the entry
+      delete data[pointId];
+    } else {
+      // Mark only the clicked checkbox as checked
+      data[pointId] = column;
+    }
+
+    setCompleted(data);
+  });
 
   const filteredChecklist = checklist.value.filter((item) => {
     const itemId = generateId(item.point);
-    const itemCompleted = isChecked(itemId);
-    // const itemIgnored = isIgnored(itemId);
+    const itemCompleted = Object.keys(completed.value).includes(itemId);
     const itemLevel = item.priority;
 
     // Filter by completion status
@@ -81,10 +86,7 @@ export default component$((props: { section: Section }) => {
     const getValue = (item: Checklist) => {
       switch (sortState.column) {
         case 'done':
-          // if (isIgnored(generateId(item.point))) {
-          //   return 2;
-          // }
-          return isChecked(generateId(item.point)) ? 0 : 1;
+          return Object.keys(completed.value).includes(generateId(item.point)) ? 0 : 1;
         case 'topic':
           return item.point;
         case 'level':
@@ -114,7 +116,6 @@ export default component$((props: { section: Section }) => {
     }
   });
 
-  // Filter feature removed (over-engineered questionnaire) 
   const resetFilters = $(() => {
     checklist.value = props.section.checklist;
     sortState.column = '';
@@ -123,102 +124,109 @@ export default component$((props: { section: Section }) => {
     filterState.show = originalFilters.show;
   });
 
-  const calculateProgress = (): { done: number, total: number, percent: number, disabled: number} => {
+  const calculateProgress = (): { done: number, total: number, percent: number, disabled: number } => {
     let done = 0;
-    let disabled = 0;
     let total = 0;
 
     props.section.checklist.forEach((item) => {
       const itemId = generateId(item.point);
-      if (isChecked(itemId)) {
+      if (Object.keys(completed.value).includes(itemId)) {
         done += 1;
-        total += 1;
-      } else {
-        total += 1;
       }
+      total += 1;
     });
 
     const percent = Math.round((done / total) * 100);
-    return { done, total: props.section.checklist.length, percent, disabled };
+    return { done, total: props.section.checklist.length, percent, disabled: 0 };
   };
 
-  const { done, total, percent, disabled } = calculateProgress();
+  const { done, total, percent } = calculateProgress();
 
   return (
     <>
-
-    <div class="flex flex-wrap justify-between items-center">
-      <div>
-        <progress class="progress w-64" value={percent} max="100"></progress>
-        <p class="text-xs text-center">
-          {done} out of {total} ({percent}%)
-          complete</p>
+      <div class="flex flex-wrap justify-between items-center">
+        <div>
+          <progress class="progress w-64" value={percent} max="100"></progress>
+          <p class="text-xs text-center">
+            {done} out of {total} ({percent}%) complete
+          </p>
+        </div>
       </div>
-    </div>
 
-    <table class="table">
-      <thead>
-        <tr>
-          { [
-            { id: 'done', text: 'Done?'},
-            { id: 'topic', text: 'Topic' }
-          ].map((item) => (
-            <th
-              key={item.id}
-              class="cursor-pointer"
-              onClick$={() => handleSort(item.id)}
-            >
-              <span class="flex items-center gap-0.5 hover:text-primary transition">
-                <Icon width={12} height={14} icon="sort" />
-                {item.text}
-              </span>
-            </th>
-          ))}
-          <th>Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredChecklist.sort(sortChecklist).map((item, index) => {
-          const badgeColor = getBadgeClass(item.priority);
-          const itemId = generateId(item.point);
-          const isItemCompleted = isChecked(itemId);
-          return (
-            <tr key={index} class={[
-              'rounded-sm transition-all',
-              isItemCompleted ? `bg-${badgeColor} bg-opacity-10` : '',
-              !isItemCompleted ? `hover:bg-opacity-5 hover:bg-${badgeColor}` : '',
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Always</th>
+            <th>Sometimes</th>
+            <th>Never</th>
+            {[
+              { id: 'topic', text: 'Topic' }
+            ].map((item) => (
+              <th
+                key={item.id}
+                class="cursor-pointer"
+                onClick$={() => handleSort(item.id)}
+              >
+                <span class="flex items-center gap-0.5 hover:text-primary transition">
+                  <Icon width={12} height={14} icon="sort" />
+                  {item.text}
+                </span>
+              </th>
+            ))}
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredChecklist.sort(sortChecklist).map((item, index) => {
+            const badgeColor = getBadgeClass(item.priority);
+            const itemId = generateId(item.point);
+            const isItemCompleted = Object.keys(completed.value).includes(itemId);
+            return (
+              <tr key={index} class={[
+                'rounded-sm transition-all',
+                isItemCompleted ? `bg-${badgeColor} bg-opacity-10` : '',
+                !isItemCompleted ? `hover:bg-opacity-5 hover:bg-${badgeColor}` : '',
               ]}>
-              <td class="text-center">
-                <input
-                  type="checkbox"
-                  class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
-                  id={`done-${itemId}`}
-                  checked={isChecked(itemId)}
-                  onClick$={() => {
-                    const data = completed.value;
-                    data[itemId] = !data[itemId];
-                    setCompleted(data);
-                  }}
-                />
-              </td>
-              <td>
-                <label
-                  for={`done-${itemId}`}
-                  class={"text-base font-bold cursor-pointer"}>
-                  {item.point}
-                </label>
-              </td>
-              {/* <td>
-                <div class={`badge gap-2 badge-${badgeColor}`}>
-                  {item.priority}
-                </div>
-              </td> */}
-              <td class={styles.checklistItemDescription} dangerouslySetInnerHTML={parseMarkdown(item.details)}></td>
-            </tr>
-          )}
-        )}
-      </tbody>
-    </table>
+                <td class="text-center">
+                  <input
+                    type="checkbox"
+                    class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
+                    id={`done-${itemId}-1`}
+                    checked={isChecked(itemId, 1)}
+                    onClick$={() => handleCheckboxClick(itemId, 1)}
+                  />
+                </td>
+                <td class="text-center">
+                  <input
+                    type="checkbox"
+                    class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
+                    id={`done-${itemId}-2`}
+                    checked={isChecked(itemId, 2)}
+                    onClick$={() => handleCheckboxClick(itemId, 2)}
+                  />
+                </td>
+                <td class="text-center">
+                  <input
+                    type="checkbox"
+                    class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
+                    id={`done-${itemId}-3`}
+                    checked={isChecked(itemId, 3)}
+                    onClick$={() => handleCheckboxClick(itemId, 3)}
+                  />
+                </td>
+                <td>
+                  <label
+                    for={`done-${itemId}`}
+                    class={"text-base font-bold cursor-pointer"}>
+                    {item.point}
+                  </label>
+                </td>
+                <td class={styles.checklistItemDescription} dangerouslySetInnerHTML={parseMarkdown(item.details)}></td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </>
   );
 });
