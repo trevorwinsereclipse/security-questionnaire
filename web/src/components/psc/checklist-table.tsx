@@ -11,7 +11,7 @@ import styles from './psc.module.css';
 export default component$((props: { section: Section }) => {
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
-  const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
+  // const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
 
   const showFilters = useSignal(false);
   const { stage } = useCSSTransition(showFilters, { timeout: 300 });
@@ -53,24 +53,24 @@ export default component$((props: { section: Section }) => {
   };
 
   // Ignore feature removed (all statements must be answered)
-  const isIgnored = (pointId: string) => {
-    return ignored.value[pointId] || false;
-  };
+  // const isIgnored = (pointId: string) => {
+  //   return ignored.value[pointId] || false;
+  // };
   
 
   const isChecked = (pointId: string) => {
-    if (isIgnored(pointId)) return false;
+    // if (isIgnored(pointId)) return false;
     return completed.value[pointId] || false;
   };
 
   const filteredChecklist = checklist.value.filter((item) => {
     const itemId = generateId(item.point);
     const itemCompleted = isChecked(itemId);
-    const itemIgnored = isIgnored(itemId);
+    // const itemIgnored = isIgnored(itemId);
     const itemLevel = item.priority;
 
     // Filter by completion status
-    if (filterState.show === 'remaining' && (itemCompleted || itemIgnored)) return false;
+    if (filterState.show === 'remaining' && itemCompleted) return false;
     if (filterState.show === 'completed' && !itemCompleted) return false;
 
     // Filter by level
@@ -81,9 +81,9 @@ export default component$((props: { section: Section }) => {
     const getValue = (item: Checklist) => {
       switch (sortState.column) {
         case 'done':
-          if (isIgnored(generateId(item.point))) {
-            return 2;
-          }
+          // if (isIgnored(generateId(item.point))) {
+          //   return 2;
+          // }
           return isChecked(generateId(item.point)) ? 0 : 1;
         case 'topic':
           return item.point;
@@ -130,9 +130,7 @@ export default component$((props: { section: Section }) => {
 
     props.section.checklist.forEach((item) => {
       const itemId = generateId(item.point);
-      if (isIgnored(itemId)) {
-        disabled += 1;
-      } else if (isChecked(itemId)) {
+      if (isChecked(itemId)) {
         done += 1;
         total += 1;
       } else {
