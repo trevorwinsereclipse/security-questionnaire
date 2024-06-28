@@ -90,7 +90,7 @@ export default component$((props: { section: Section }) => {
         case 'topic':
           return item.point;
         case 'level':
-          return ['essential', 'optional', 'advanced'].indexOf(item.priority.toLowerCase());
+          return ['essential', 'optional', 'advanced', 'completed'].indexOf(item.priority.toLowerCase());
         default:
           return 0;
       }
