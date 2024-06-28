@@ -2,7 +2,6 @@ import { component$, useContext } from "@builder.io/qwik";
 
 import { ChecklistContext } from '~/store/checklist-context';
 import { useLocalStorage } from "~/hooks/useLocalStorage";
-import { useChecklist } from '~/store/local-checklist-store';
 import type { Section } from "~/types/PSC";
 
 export default component$(() => {

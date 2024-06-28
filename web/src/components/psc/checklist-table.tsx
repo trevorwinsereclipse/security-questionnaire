@@ -12,7 +12,7 @@ export default component$((props: { section: Section }) => {
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
 
   const showFilters = useSignal(false);
-  const { stage } = useCSSTransition(showFilters, { timeout: 300 });
+  // const { stage } = useCSSTransition(showFilters, { timeout: 300 });
 
   const sortState = useStore({ column: '', ascending: true });
 
@@ -117,13 +117,13 @@ export default component$((props: { section: Section }) => {
     }
   });
 
-  const resetFilters = $(() => {
-    checklist.value = props.section.checklist;
-    sortState.column = '';
-    sortState.ascending = true;
-    filterState.levels = originalFilters.levels;
-    filterState.show = originalFilters.show;
-  });
+  // const resetFilters = $(() => {
+  //   checklist.value = props.section.checklist;
+  //   sortState.column = '';
+  //   sortState.ascending = true;
+  //   filterState.levels = originalFilters.levels;
+  //   filterState.show = originalFilters.show;
+  // });
 
   const calculateProgress = (): { done: number, total: number, percent: number, disabled: number } => {
     let done = 0;
