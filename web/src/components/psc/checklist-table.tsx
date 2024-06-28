@@ -24,6 +24,7 @@ export default component$((props: { section: Section }) => {
       essential: true,
       optional: true,
       advanced: true,
+      completed: true,
     },
   };
 
