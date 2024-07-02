@@ -87,20 +87,20 @@ export default component$(() => {
     // Define colors and styles for progress chart
     const primaryColor = color || 'hsl(var(--pf, 220, 13%, 69%))';
     const foregroundColor = 'hsl(var(--nc, 220, 13%, 69%))';
-    const red = `hsl(${getCssVariableValue('--er', '0 91% 71%')})`;
-    const green = `hsl(${getCssVariableValue('--su', '158 64% 52%')})`;
-    const labelStyles = {
-      color: foregroundColor, position: 'absolute', right: '0.5rem',  top: '2rem'
-    };
+    // const red = `hsl(${getCssVariableValue('--er', '0 91% 71%')})`;
+    // const green = `hsl(${getCssVariableValue('--su', '158 64% 52%')})`;
+    // const labelStyles = {
+    //   color: foregroundColor, position: 'absolute', right: '0.5rem',  top: '2rem'
+    // };
     // Animations to occur on each step of the progress bar
-    const stepFunction = (state: any, bar: any) => {
-      const value = Math.round(bar.value() * 100);
-      bar.path.setAttribute('stroke', state.color);
-      bar.setText(value ? `${value}%` : '');
-      if (value >= percentage) {
-        bar.path.setAttribute('stroke', primaryColor);
-      }
-    };
+    // const stepFunction = (state: any, bar: any) => {
+    //   const value = Math.round(bar.value() * 100);
+    //   bar.path.setAttribute('stroke', state.color);
+    //   bar.setText(value ? `${value}%` : '');
+    //   if (value >= percentage) {
+    //     bar.path.setAttribute('stroke', primaryColor);
+    //   }
+    // };
     // Define config settings for progress chart
     // const progressConfig = {
     //   strokeWidth: 6,
@@ -269,11 +269,11 @@ export default component$(() => {
     });
   }));
 
-  const items = [
-    { id: 'completed-container', label: 'Completed' },
+  // const items = [
+    // { id: 'completed-container', label: 'Completed' },
     // { id: 'optional-container', label: 'Optional' },
     // { id: 'advanced-container', label: 'Advanced' },
-  ];
+  // ];
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
