@@ -258,7 +258,7 @@ export default component$(() => {
               },
               tooltip: {
                 callbacks: {
-                  label: (ctx) => `Completed ${Math.round(ctx.parsed.r)}% of ${ctx.dataset.label || ''} items`,
+                  label: (ctx) => `${Math.round(ctx.parsed.r)}% of ${ctx.dataset.label || ''} items`,
                 }
               }
             },
