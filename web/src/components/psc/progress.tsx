@@ -19,7 +19,7 @@ export default component$(() => {
   // Completed items, from local storage
   const [checkedItems] = useLocalStorage('PSC_PROGRESS', {});
   // Ignored items, from local storage
-  // const [ignoredItems] = useLocalStorage('PSC_IGNORED', {});
+  const [ignoredItems] = useLocalStorage('PSC_IGNORED', {});
   // Local storage for closing and ignoring the welcome dialog
   const [ignoreDialog, setIgnoreDialog] = useLocalStorage('PSC_CLOSE_WELCOME', false);
   // Store to hold calculated progress results
@@ -40,14 +40,18 @@ export default component$(() => {
     if (!checkedItems.value || !sections.length) {
       return { completed: 0, outOf: 0 };
     }
-    const totalItems = sections.reduce((total: number, section: Section) => total + section.checklist.length, 0);
+    let totalItems = sections.reduce((total: number, section: Section) => total + section.checklist.length, 0);
     let totalComplete = 0;
     sections.forEach((section: Section) => {
       section.checklist.forEach((item) => {
         const id = item.point.toLowerCase().replace(/ /g, '-');
         const isComplete = checkedItems.value[id];
+        const isIgnored = ignoredItems.value[id];
         if (isComplete) {
           totalComplete++;
+        }
+        if (isIgnored) {
+          totalItems--;
         }
       });
     });
@@ -147,9 +151,9 @@ export default component$(() => {
         totalProgress.value = progress;
     })
 
-    makeDataAndDrawChart('completed', 'hsl(var(--su, 158 64% 52%))');
-    // makeDataAndDrawChart('optional', 'hsl(var(--wa, 43 96% 56%))');
-    // makeDataAndDrawChart('advanced', 'hsl(var(--er, 0 91% 71%))');
+    makeDataAndDrawChart('essential', 'hsl(var(--su, 158 64% 52%))');
+    makeDataAndDrawChart('optional', 'hsl(var(--wa, 43 96% 56%))');
+    makeDataAndDrawChart('advanced', 'hsl(var(--er, 0 91% 71%))');
   }));
 
 
@@ -164,7 +168,7 @@ export default component$(() => {
     }));
   }));
 
- 
+
   interface RadarChartData {
     labels: string[];
     datasets: {
@@ -206,9 +210,9 @@ export default component$(() => {
   
     // Wait on each set to resolve, and return the final data object
     return Promise.all([
-      // buildDataForPriority('advanced', 'hsl(0 91% 71%/75%)'),
-      // buildDataForPriority('optional', 'hsl(43 96% 56%/75%)'),
-      buildDataForPriority('completed', 'hsl(158 64% 52%/75%)'),      
+      buildDataForPriority('advanced', 'hsl(0 91% 71%/75%)'),
+      buildDataForPriority('optional', 'hsl(43 96% 56%/75%)'),
+      buildDataForPriority('essential', 'hsl(158 64% 52%/75%)'),      
     ]).then(datasets => ({
       labels,
       datasets,
@@ -258,7 +262,7 @@ export default component$(() => {
               },
               tooltip: {
                 callbacks: {
-                  label: (ctx) => `${Math.round(ctx.parsed.r)}% of ${ctx.dataset.label || ''} items`,
+                  label: (ctx) => `Completed ${Math.round(ctx.parsed.r)}% of ${ctx.dataset.label || ''} items`,
                 }
               }
             },
@@ -270,9 +274,9 @@ export default component$(() => {
   }));
 
   const items = [
-    { id: 'completed-container', label: 'Completed' },
-    // { id: 'optional-container', label: 'Optional' },
-    // { id: 'advanced-container', label: 'Advanced' },
+    { id: 'essential-container', label: 'Essential' },
+    { id: 'optional-container', label: 'Optional' },
+    { id: 'advanced-container', label: 'Advanced' },
   ];
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
@@ -306,9 +310,40 @@ export default component$(() => {
           max={totalProgress.value.outOf}>
         </progress>
       </div>
-      <div class="justify-center flex-col items-center gap-6 hidden xl:flex">
+    
+      {/* Completion per level */}
+      <div class="carousel rounded-box">
+      {items.map((item) => (
+        <div
+          key={item.id}
+          class="flex flex-col justify-items-center carousel-item w-20 p-4
+                bg-front shadow-md mx-2.5 rounded-box">
+          <div class="relative" id={item.id}></div>
+          <p class="text-center">{item.label}</p>
+        </div>
+        ))}
+      </div>
+      {/* Something ??? */}
+      <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
+        <p class="text-sm opacity-80 mb-2">
+          Next up, consider switching to more secure and
+          privacy-respecting apps and services.
+        </p>
+        <p class="text-lg">
+          View our directory of recommended software,
+          at <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
+        </p>
+      </div>
+    </div>
+
+    {/* Radar Chart showing total progress per category and level */}
+    <div class="rounded-box bg-front shadow-md w-96 p-4">
+      <canvas ref={radarChart} id="myChart"></canvas>
+    </div>
+
+    <div class="justify-center flex-col items-center gap-6 hidden xl:flex">
       {/* Remaining Tasks */}
-      <div class="p-4 rounded-box bg-front shadow-md w-96">
+      <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
         <ul>
           { checklists.value.map((section: Section, index: number) => (
               <li key={index}>
@@ -335,37 +370,6 @@ export default component$(() => {
         </ul>
       </div>
     </div>
-      {/* Completion per level */}
-      {/* <div class="carousel rounded-box">
-      {items.map((item) => (
-        <div
-          key={item.id}
-          class="flex flex-col justify-items-center carousel-item w-20 p-4
-                bg-front shadow-md mx-2.5 rounded-box">
-          <div class="relative" id={item.id}></div>
-          <p class="text-center">{item.label}</p>
-        </div>
-        ))}
-      </div> */}
-      {/* Something ??? */}
-      {/* <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
-        <p class="text-sm opacity-80 mb-2">
-          Next up, consider switching to more secure and
-          privacy-respecting apps and services.
-        </p>
-        <p class="text-lg">
-          View our directory of recommended software,
-          at <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
-        </p>
-      </div> */}
-    </div>
-
-    {/* Radar Chart showing total progress per category and level */}
-    <div class="rounded-box bg-front shadow-md w-96 p-4">
-      <canvas ref={radarChart} id="myChart"></canvas>
-    </div>
-
-    
   </div>
   );
 });
