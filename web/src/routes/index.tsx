@@ -16,7 +16,7 @@ export default component$(() => {
   return (
     <>
       <Hero />
-      <Progress />
+      {/* <Progress /> */}
       <SectionLinkGrid sections={checklists.value} />
     </>
   );

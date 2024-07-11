@@ -164,7 +164,7 @@ export default component$(() => {
     }));
   }));
 
-
+ 
   interface RadarChartData {
     labels: string[];
     datasets: {
@@ -269,11 +269,11 @@ export default component$(() => {
     });
   }));
 
-  // const items = [
-    // { id: 'completed-container', label: 'Completed' },
+  const items = [
+    { id: 'completed-container', label: 'Completed' },
     // { id: 'optional-container', label: 'Optional' },
     // { id: 'advanced-container', label: 'Advanced' },
-  // ];
+  ];
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
