@@ -46,13 +46,13 @@ export default component$(() => {
       section.checklist.forEach((item) => {
         const id = item.point.toLowerCase().replace(/ /g, '-');
         const isComplete = checkedItems.value[id];
-        const isIgnored = ignoredItems.value[id];
+        // const isIgnored = ignoredItems.value[id];
         if (isComplete) {
           totalComplete++;
         }
-        if (isIgnored) {
-          totalItems--;
-        }
+        // if (isIgnored) {
+        //   totalItems--;
+        // }
       });
     });
     return { completed: totalComplete, outOf: totalItems };
@@ -152,8 +152,8 @@ export default component$(() => {
     })
 
     makeDataAndDrawChart('essential', 'hsl(var(--su, 158 64% 52%))');
-    makeDataAndDrawChart('optional', 'hsl(var(--wa, 43 96% 56%))');
-    makeDataAndDrawChart('advanced', 'hsl(var(--er, 0 91% 71%))');
+    // makeDataAndDrawChart('optional', 'hsl(var(--wa, 43 96% 56%))');
+    // makeDataAndDrawChart('advanced', 'hsl(var(--er, 0 91% 71%))');
   }));
 
 
@@ -210,8 +210,8 @@ export default component$(() => {
   
     // Wait on each set to resolve, and return the final data object
     return Promise.all([
-      buildDataForPriority('advanced', 'hsl(0 91% 71%/75%)'),
-      buildDataForPriority('optional', 'hsl(43 96% 56%/75%)'),
+      // buildDataForPriority('advanced', 'hsl(0 91% 71%/75%)'),
+      // buildDataForPriority('optional', 'hsl(43 96% 56%/75%)'),
       buildDataForPriority('essential', 'hsl(158 64% 52%/75%)'),      
     ]).then(datasets => ({
       labels,
@@ -273,11 +273,11 @@ export default component$(() => {
     });
   }));
 
-  const items = [
-    { id: 'essential-container', label: 'Essential' },
-    { id: 'optional-container', label: 'Optional' },
-    { id: 'advanced-container', label: 'Advanced' },
-  ];
+  // const items = [
+  //   { id: 'essential-container', label: 'Essential' },
+    // { id: 'optional-container', label: 'Optional' },
+    // { id: 'advanced-container', label: 'Advanced' },
+  // ];
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
@@ -310,38 +310,6 @@ export default component$(() => {
           max={totalProgress.value.outOf}>
         </progress>
       </div>
-    
-      {/* Completion per level */}
-      <div class="carousel rounded-box">
-      {items.map((item) => (
-        <div
-          key={item.id}
-          class="flex flex-col justify-items-center carousel-item w-20 p-4
-                bg-front shadow-md mx-2.5 rounded-box">
-          <div class="relative" id={item.id}></div>
-          <p class="text-center">{item.label}</p>
-        </div>
-        ))}
-      </div>
-      {/* Something ??? */}
-      <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
-        <p class="text-sm opacity-80 mb-2">
-          Next up, consider switching to more secure and
-          privacy-respecting apps and services.
-        </p>
-        <p class="text-lg">
-          View our directory of recommended software,
-          at <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
-        </p>
-      </div>
-    </div>
-
-    {/* Radar Chart showing total progress per category and level */}
-    <div class="rounded-box bg-front shadow-md w-96 p-4">
-      <canvas ref={radarChart} id="myChart"></canvas>
-    </div>
-
-    <div class="justify-center flex-col items-center gap-6 hidden xl:flex">
       {/* Remaining Tasks */}
       <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
         <ul>
@@ -369,6 +337,34 @@ export default component$(() => {
           ))}
         </ul>
       </div>
+      {/* Completion per level */}
+      {/* <div class="carousel rounded-box">
+      {items.map((item) => (
+        <div
+          key={item.id}
+          class="flex flex-col justify-items-center carousel-item w-20 p-4
+                bg-front shadow-md mx-2.5 rounded-box">
+          <div class="relative" id={item.id}></div>
+          <p class="text-center">{item.label}</p>
+        </div>
+        ))}
+      </div> */}
+      {/* Something ??? */}
+      {/* <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
+        <p class="text-sm opacity-80 mb-2">
+          Next up, consider switching to more secure and
+          privacy-respecting apps and services.
+        </p>
+        <p class="text-lg">
+          View our directory of recommended software,
+          at <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
+        </p>
+      </div> */}
+    </div>
+
+    {/* Radar Chart showing total progress per category and level */}
+    <div class="rounded-box bg-front shadow-md w-96 p-4">
+      <canvas ref={radarChart} id="myChart"></canvas>
     </div>
   </div>
   );
