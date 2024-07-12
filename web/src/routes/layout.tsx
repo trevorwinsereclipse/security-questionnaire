@@ -9,9 +9,9 @@ import { ChecklistContext } from "~/store/checklist-context";
 import type { Sections } from "~/types/PSC";
 
 export const useChecklists = routeLoader$(async () => {
-  const localURL = 'http://localhost:5173/personal-security-checklist.yml'
-  // const remoteUrl = 'https://raw.githubusercontent.com/trevorwinsereclipse/security-questionnaire/main/personal-security-checklist.yml';
-  return fetch(localURL)
+  // const localURL = 'http://localhost:5173/personal-security-checklist.yml'
+  const remoteURL = 'https://raw.githubusercontent.com/trevorwinsereclipse/security-questionnaire/main/personal-security-checklist.yml';
+  return fetch(remoteURL)
     .then((res) => res.text())
     .then((res) => jsyaml.load(res) as Sections);
 });

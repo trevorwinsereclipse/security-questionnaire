@@ -273,11 +273,11 @@ export default component$(() => {
     });
   }));
 
-  // const items = [
-  //   { id: 'essential-container', label: 'Essential' },
+  const items = [
+    { id: 'essential-container', label: 'Essential' },
     // { id: 'optional-container', label: 'Optional' },
     // { id: 'advanced-container', label: 'Advanced' },
-  // ];
+  ];
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
@@ -311,7 +311,7 @@ export default component$(() => {
         </progress>
       </div>
       {/* Remaining Tasks */}
-      <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
+      <div class="p-4 rounded-box bg-front shadow-md w-96">
         <ul>
           { checklists.value.map((section: Section, index: number) => (
               <li key={index}>
@@ -338,7 +338,7 @@ export default component$(() => {
         </ul>
       </div>
       {/* Completion per level */}
-      {/* <div class="carousel rounded-box">
+      <div class="carousel rounded-box">
       {items.map((item) => (
         <div
           key={item.id}
@@ -348,7 +348,7 @@ export default component$(() => {
           <p class="text-center">{item.label}</p>
         </div>
         ))}
-      </div> */}
+      </div>
       {/* Something ??? */}
       {/* <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
         <p class="text-sm opacity-80 mb-2">
@@ -369,4 +369,3 @@ export default component$(() => {
   </div>
   );
 });
-
