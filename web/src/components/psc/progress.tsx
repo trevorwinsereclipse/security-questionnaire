@@ -19,7 +19,7 @@ export default component$(() => {
   // Completed items, from local storage
   const [checkedItems] = useLocalStorage('PSC_PROGRESS', {});
   // Ignored items, from local storage
-  const [ignoredItems] = useLocalStorage('PSC_IGNORED', {});
+  // const [ignoredItems] = useLocalStorage('PSC_IGNORED', {});
   // Local storage for closing and ignoring the welcome dialog
   const [ignoreDialog, setIgnoreDialog] = useLocalStorage('PSC_CLOSE_WELCOME', false);
   // Store to hold calculated progress results
@@ -40,7 +40,7 @@ export default component$(() => {
     if (!checkedItems.value || !sections.length) {
       return { completed: 0, outOf: 0 };
     }
-    let totalItems = sections.reduce((total: number, section: Section) => total + section.checklist.length, 0);
+    const totalItems = sections.reduce((total: number, section: Section) => total + section.checklist.length, 0);
     let totalComplete = 0;
     sections.forEach((section: Section) => {
       section.checklist.forEach((item) => {
