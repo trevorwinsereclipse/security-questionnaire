@@ -46,9 +46,13 @@ export default component$(() => {
       section.checklist.forEach((item) => {
         const id = item.point.toLowerCase().replace(/ /g, '-');
         const isComplete = checkedItems.value[id];
+        // const isIgnored = ignoredItems.value[id];
         if (isComplete) {
           totalComplete++;
         }
+        // if (isIgnored) {
+        //   totalItems--;
+        // }
       });
     });
     return { completed: totalComplete, outOf: totalItems };
@@ -147,7 +151,7 @@ export default component$(() => {
         totalProgress.value = progress;
     })
 
-    makeDataAndDrawChart('completed', 'hsl(var(--su, 158 64% 52%))');
+    makeDataAndDrawChart('essential', 'hsl(var(--su, 158 64% 52%))');
     // makeDataAndDrawChart('optional', 'hsl(var(--wa, 43 96% 56%))');
     // makeDataAndDrawChart('advanced', 'hsl(var(--er, 0 91% 71%))');
   }));
@@ -208,7 +212,7 @@ export default component$(() => {
     return Promise.all([
       // buildDataForPriority('advanced', 'hsl(0 91% 71%/75%)'),
       // buildDataForPriority('optional', 'hsl(43 96% 56%/75%)'),
-      buildDataForPriority('completed', 'hsl(158 64% 52%/75%)'),      
+      buildDataForPriority('essential', 'hsl(158 64% 52%/75%)'),      
     ]).then(datasets => ({
       labels,
       datasets,
@@ -258,7 +262,7 @@ export default component$(() => {
               },
               tooltip: {
                 callbacks: {
-                  label: (ctx) => `${Math.round(ctx.parsed.r)}% of ${ctx.dataset.label || ''} items`,
+                  label: (ctx) => `Completed ${Math.round(ctx.parsed.r)}% of ${ctx.dataset.label || ''} items`,
                 }
               }
             },
@@ -270,7 +274,7 @@ export default component$(() => {
   }));
 
   // const items = [
-    // { id: 'completed-container', label: 'Completed' },
+  //   { id: 'essential-container', label: 'Essential' },
     // { id: 'optional-container', label: 'Optional' },
     // { id: 'advanced-container', label: 'Advanced' },
   // ];
@@ -306,7 +310,6 @@ export default component$(() => {
           max={totalProgress.value.outOf}>
         </progress>
       </div>
-      <div class="justify-center flex-col items-center gap-6 hidden xl:flex">
       {/* Remaining Tasks */}
       <div class="p-4 rounded-box bg-front shadow-md w-96">
         <ul>
@@ -334,7 +337,6 @@ export default component$(() => {
           ))}
         </ul>
       </div>
-    </div>
       {/* Completion per level */}
       {/* <div class="carousel rounded-box">
       {items.map((item) => (
@@ -364,8 +366,6 @@ export default component$(() => {
     <div class="rounded-box bg-front shadow-md w-96 p-4">
       <canvas ref={radarChart} id="myChart"></canvas>
     </div>
-
-    
   </div>
   );
 });
