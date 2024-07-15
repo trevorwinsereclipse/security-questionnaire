@@ -25,7 +25,8 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 
 export default component$(() => {
   const checklists = useChecklists();
-  console.log(checklists);
+  // console.log(checklists);
+  // console.log("Hello world");
   useContextProvider(ChecklistContext, checklists);
 
   return (
