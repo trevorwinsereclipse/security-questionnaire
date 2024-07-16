@@ -7,10 +7,7 @@ import Progress from "~/components/psc/progress";
 
 import { ChecklistContext } from '~/store/checklist-context';
 
-
-
 export default component$(() => { 
-
   const checklists = useContext(ChecklistContext);
 
   return (

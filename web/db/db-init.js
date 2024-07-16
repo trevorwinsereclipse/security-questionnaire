@@ -19,7 +19,7 @@ if (!fs.existsSync(dbFilePath)) {
       email TEXT NOT NULL UNIQUE
     )`);
 
-    db.run(`INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com')`);
+    // db.run(`INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com')`);
   });
 
   db.close((err) => {
