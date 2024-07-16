@@ -15,7 +15,8 @@
     "lint": "eslint \"src/**/*.ts*\" -f compact",
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
-    "qwik": "qwik"
+    "qwik": "qwik",
+    "seed": "node -r dotenv/config ./scripts/seed.js"
   },
   "devDependencies": {
     "@builder.io/qwik-city": "^1.1.4",
@@ -44,8 +45,7 @@
     "marked": "^12.0.0",
     "progressbar.js": "^1.1.1",
     "qwik-transition": "^0.0.7",
-    "sharp": "^0.32.6",
-    "sqlite3": "^5.1.7"
+    "sharp": "^0.32.6"
   },
   "resolutions": {
     "sharp": "^0.32.6"
