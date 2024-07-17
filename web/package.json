@@ -1,6 +1,5 @@
 {
   "license": "MIT",
-
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
@@ -13,7 +12,7 @@
     "fmt.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\" -f compact",
     "preview": "qwik build preview && vite preview --open",
-    "start": "vite --open --mode ssr",
+    "start": "vite --mode ssr",
     "qwik": "qwik",
     "seed": "node -r dotenv/config ./scripts/seed.js"
   },
