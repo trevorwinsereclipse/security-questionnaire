@@ -5,7 +5,7 @@ import { useLocalStorage } from "~/hooks/useLocalStorage";
 import { ChecklistContext } from "~/store/checklist-context";
 import type { Priority, Sections, Section } from '~/types/PSC';
 import Icon from '~/components/core/icon';
-
+import SectionLinkGrid from "~/components/psc/section-link-grid";
 /**
  * Component for client-side user progress metrics.
  * Combines checklist data with progress from local storage,
@@ -273,11 +273,11 @@ export default component$(() => {
     });
   }));
 
-  const items = [
-    { id: 'essential-container', label: 'Essential' },
+  // const items = [
+  //   { id: 'essential-container', label: 'Essential' },
     // { id: 'optional-container', label: 'Optional' },
     // { id: 'advanced-container', label: 'Advanced' },
-  ];
+  // ];
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
@@ -296,49 +296,57 @@ export default component$(() => {
         <p class="w-md text-left my-2">Get started, by selecting a checklist below</p>
       </div>
     )}
-
-    <div class="flex justify-center flex-col items-center gap-6">
-      {/* Progress Percent */}
+      <div class="flex justify-top flex-col items-center gap-6">
+        {/* Progress Percent */}
+        <div class="rounded-box bg-front shadow-md w-96 p-4">
+            <h3 class="text-primary text-2xl">Your Progress</h3>
+            <p class="text-lg">
+              You've completed <b>{totalProgress.value.completed} out of {totalProgress.value.outOf}</b> items
+            </p>
+            <progress
+              class="progress w-80"
+              value={totalProgress.value.completed}
+              max={totalProgress.value.outOf}>
+            </progress>
+        </div>
+        {/* Remaining Tasks */}
+        <div class="p-4 rounded-box bg-front shadow-md w-96">
+          <ul>
+            { checklists.value.map((section: Section, index: number) => (
+                <li key={index}>
+                  <a
+                    href={`/checklist/${section.slug}`}
+                    class={[
+                      'my-2 w-80 flex justify-between items-center tooltip transition',
+                      `hover:text-${section.color}-400`
+                    ]}
+                    data-tip={`Completed ${sectionCompletion.value[index]}% of ${section.checklist.length} items.`}
+                  >
+                  <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-40">
+                    <Icon icon={section.icon} width={14} />
+                    {section.title}
+                  </p>
+                  <div class="progress w-36">
+                    <span 
+                      class={`block h-full transition bg-${section.color}-400`}
+                      style={`width: ${sectionCompletion.value[index] || 0}%;`}></span>
+                  </div>
+                  </a>
+                </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      {/* Radar Chart showing total progress per category and level */}
       <div class="rounded-box bg-front shadow-md w-96 p-4">
-        <h3 class="text-primary text-2xl">Your Progress</h3>
-        <p class="text-lg">
-          You've completed <b>{totalProgress.value.completed} out of {totalProgress.value.outOf}</b> items
-        </p>
-        <progress
-          class="progress w-80"
-          value={totalProgress.value.completed}
-          max={totalProgress.value.outOf}>
-        </progress>
+        <canvas ref={radarChart} id="myChart"></canvas>
       </div>
-      {/* Remaining Tasks */}
-      <div class="p-4 rounded-box bg-front shadow-md w-96">
-        <ul>
-          { checklists.value.map((section: Section, index: number) => (
-              <li key={index}>
-                <a
-                  href={`/checklist/${section.slug}`}
-                  class={[
-                    'my-2 w-80 flex justify-between items-center tooltip transition',
-                    `hover:text-${section.color}-400`
-                  ]}
-                  data-tip={`Completed ${sectionCompletion.value[index]}% of ${section.checklist.length} items.`}
-                >
-                <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-40">
-                  <Icon icon={section.icon} width={14} />
-                  {section.title}
-                </p>
-                <div class="progress w-36">
-                  <span 
-                    class={`block h-full transition bg-${section.color}-400`}
-                    style={`width: ${sectionCompletion.value[index] || 0}%;`}></span>
-                </div>
-                </a>
-              </li>
-          ))}
-        </ul>
-      </div>
+      <div class="flex justify-top flex-col items-center gap-6">
+      
+      <div class="p-4 rounded-box w-96"><SectionLinkGrid sections={checklists.value} /></div>
+      
       {/* Completion per level */}
-      <div class="carousel rounded-box">
+      {/* <div class="carousel rounded-box">
       {items.map((item) => (
         <div
           key={item.id}
@@ -348,7 +356,7 @@ export default component$(() => {
           <p class="text-center">{item.label}</p>
         </div>
         ))}
-      </div>
+      </div> */}
       {/* Something ??? */}
       {/* <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
         <p class="text-sm opacity-80 mb-2">
@@ -360,11 +368,6 @@ export default component$(() => {
           at <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
         </p>
       </div> */}
-    </div>
-
-    {/* Radar Chart showing total progress per category and level */}
-    <div class="rounded-box bg-front shadow-md w-96 p-4">
-      <canvas ref={radarChart} id="myChart"></canvas>
     </div>
   </div>
   );
