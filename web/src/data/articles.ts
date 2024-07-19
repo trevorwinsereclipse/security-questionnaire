@@ -47,7 +47,7 @@ const articles: Article[] = [
     description: 'Handy hardware devices that can help protect your privacy and security.',
     slug: 'security-gadgets',
     markdown: 'https://raw.githubusercontent.com/trevorwinsereclipse/security-questionnaire/md/security-gadgets.md',
-    warningMessage: '',
+    warningMessage: 'Error loading',
   }
 ];
 
