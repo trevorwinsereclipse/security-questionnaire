@@ -135,14 +135,14 @@ export default component$(() => {
               <Icon class="mr-2" icon="about" width={16} height={16} />About
             </a>
             <ul>
-              <li>
+              {/* <li>
                 <a href="https://github.com/Lissy93/personal-security-checklist/?tab=readme-ov-file#contributing">Contributing</a>
-              </li>
+              </li> */}
               <li>
                 <a href="https://github.com/Lissy93/personal-security-checklist/blob/master/LICENSE">License</a>
               </li>
             </ul>
-            <ul>
+            {/* <ul>
             <li>
               <a href="/about#author">Author</a>
               <ul>
@@ -159,7 +159,7 @@ export default component$(() => {
                 </li>
               </ul>
             </li>
-            </ul>
+            </ul> */}
           </li>
         </ul>
       </div>
