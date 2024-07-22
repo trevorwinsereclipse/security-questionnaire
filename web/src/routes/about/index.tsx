@@ -2,7 +2,7 @@ import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 import Icon from "~/components/core/icon";
-import { projects, socials, intro, license } from './about-content';
+import { intro, license } from './about-content';
 // import { marked } from "marked";
 
 export default component$(() => {
@@ -64,7 +64,7 @@ export default component$(() => {
       </article>
       <div class="divider"></div>
 
-      <article class="bg-back p-8 mx-auto max-w-[1200px] my-8 rounded-lg shadow-md">
+      {/* <article class="bg-back p-8 mx-auto max-w-[1200px] my-8 rounded-lg shadow-md">
         <h2 class="text-3xl mb-2" id="author">About the Author</h2>
           <p>
             This project was originally started by
@@ -113,7 +113,7 @@ export default component$(() => {
 
       </article>
 
-      <div class="divider"></div>
+      <div class="divider"></div> */}
 
       <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
         <h2 class="text-3xl mb-2">License</h2>
