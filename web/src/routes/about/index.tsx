@@ -1,42 +1,42 @@
-import { component$, useResource$, Resource } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 import Icon from "~/components/core/icon";
-import { projects, socials, intro, contributing, license } from './about-content';
-import { marked } from "marked";
+import { projects, socials, intro, license } from './about-content';
+// import { marked } from "marked";
 
 export default component$(() => {
 
-  interface Contributor {
-    login: string;
-    avatar_url: string;
-    avatarUrl: string;
-    html_url: string;
-    contributions: number;
-    name: string;
-  }
+  // interface Contributor {
+  //   login: string;
+  //   avatar_url: string;
+  //   avatarUrl: string;
+  //   html_url: string;
+  //   contributions: number;
+  //   name: string;
+  // }
 
-  const parseMarkdown = (text: string | undefined): string => {
-    return marked.parse(text || '', { async: false }) as string || '';
-  };
+  // const parseMarkdown = (text: string | undefined): string => {
+  //   return marked.parse(text || '', { async: false }) as string || '';
+  // };
 
-  const contributorsResource = useResource$<Contributor[]>(async () => {
-    const url = 'https://api.github.com/repos/lissy93/personal-security-checklist/contributors?per_page=100';
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch contributors');
-    }
-    return await response.json();
-  });
+  // const contributorsResource = useResource$<Contributor[]>(async () => {
+  //   const url = 'https://api.github.com/repos/lissy93/personal-security-checklist/contributors?per_page=100';
+  //   const response = await fetch(url);
+  //   if (!response.ok) {
+  //     throw new Error('Failed to fetch contributors');
+  //   }
+  //   return await response.json();
+  // });
 
-  const sponsorsResource = useResource$<Contributor[]>(async () => {
-    const url = 'https://github-sponsors.as93.workers.dev/lissy93';
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch sponsors');
-    }
-    return await response.json();
-  });
+  // const sponsorsResource = useResource$<Contributor[]>(async () => {
+  //   const url = 'https://github-sponsors.as93.workers.dev/lissy93';
+  //   const response = await fetch(url);
+  //   if (!response.ok) {
+  //     throw new Error('Failed to fetch sponsors');
+  //   }
+  //   return await response.json();
+  // });
 
 
   return (
@@ -47,90 +47,19 @@ export default component$(() => {
           <p class="mb-2" key={index}>{paragraph}</p>
         ))}        
       </article>
-      <div class="divider"></div>
+      {/* <div class="divider"></div> */}
 
-      <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
+      {/* <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
         <h2 class="text-3xl mb-2">Contributing</h2>
         {contributing.map((paragraph, index) => (
           <p class="mb-2" key={index} dangerouslySetInnerHTML={parseMarkdown(paragraph)}></p>
         ))}        
-      </article>
+      </article> */}
       <div class="divider"></div>
 
       <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
         <h2 class="text-3xl mb-2">Acknowledgments</h2>
-
-
-        <h3 class="text-2xl mb-2">Sponsors</h3>
-
-        <p>
-          Huge thanks to the following sponsors, for their ongoing support 💖
-        </p>
-
-        <div class="flex flex-wrap gap-4 my-4 mx-auto">
-          <Resource
-              value={sponsorsResource}
-              onPending={() => <p>Loading...</p>}
-              onResolved={(contributors: Contributor[]) => (
-                contributors.map((contributor: Contributor) => (
-                  <a
-                    class="w-16 tooltip tooltip-bottom"
-                    href={contributor.html_url || `https://github.com/${contributor.login}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    key={contributor.login}
-                    data-tip={`Thank you @${contributor.login}`}
-                  >
-                    <img
-                      class="avatar rounded"
-                      width="64" height="64"
-                      src={contributor.avatar_url || contributor.avatarUrl}
-                      alt={contributor.login}
-                    />
-                    <p
-                      class="text-ellipsis overflow-hidden w-max-16 mx-auto line-clamp-2"
-                    >{contributor.name || contributor.login}</p>
-                  </a>
-                ))
-              )}
-            />
-          </div>
-
-        <div class="divider"></div>
-
-        <h3 class="text-2xl mb-2">Contributors</h3>
-        <p>
-          This project exists thanks to all the people who've helped build and maintain it.<br />
-          Special thanks to the below, top-100 contributors 🌟
-        </p>
-        <div class="flex flex-wrap gap-4 my-4 mx-auto">
-          <Resource
-            value={contributorsResource}
-            onPending={() => <p>Loading...</p>}
-            onResolved={(contributors: Contributor[]) => (
-              contributors.map((contributor: Contributor) => (
-                <a
-                  class="w-16 tooltip tooltip-bottom"
-                  href={contributor.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  key={contributor.login}
-                  data-tip={`@${contributor.login} has contributed ${contributor.contributions} times\n\nClick to view their profile`}
-                >
-                  <img
-                    class="avatar rounded"
-                    width="64" height="64"
-                    src={contributor.avatar_url}
-                    alt={contributor.login}
-                  />
-                  <p
-                    class="text-ellipsis overflow-hidden w-max-16 mx-auto"
-                  >{contributor.login}</p>
-                </a>
-              ))
-            )}
-          />
-        </div>
+        <p>The original work this website is based on was produced by <a href="https://aliciasykes.com" class="link link-primary">Alicia Sykes</a>. If you wish to find out more about her project, follow the link <a href="https://digital-defense.io/" class="link link-primary">here</a>.</p>
 
       </article>
       <div class="divider"></div>
