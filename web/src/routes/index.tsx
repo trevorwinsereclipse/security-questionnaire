@@ -1,7 +1,7 @@
 import { component$ } from '@builder.io/qwik';
 import { type DocumentHead } from "@builder.io/qwik-city";
 
-import Hero from "~/components/furniture/hero";
+// import Hero from "~/components/furniture/hero";
 // import SectionLinkGrid from "~/components/psc/section-link-grid";
 import Progress from "~/components/psc/progress";
 
@@ -12,7 +12,7 @@ export default component$(() => {
 
   return (
     <>
-      <Hero />
+      {/* <Hero /> */}
       <Progress />
       {/* <SectionLinkGrid sections={checklists.value} /> */}
     </>
@@ -20,11 +20,11 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: "Digital Defense",
+  title: "Security Questionnaire",
   meta: [
     {
       name: "description",
-      content: "The ultimate personal security checklist, for securing your digital life.",
+      content: "How secure are you? Find out today.",
     },
   ],
 };
