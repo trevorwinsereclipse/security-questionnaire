@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 
-import Icon from "~/components/core/icon";
+// import Icon from "~/components/core/icon";
 
 export default component$(() => {
   return (

@@ -94,9 +94,22 @@ export const intro = [
 //   },
 // ];
 
-export const license = `
+export const eclipse_license = `
+ * Copyright (c) 2024 Eclipse Foundation and others
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Creative Commons Attribution 4.0 International Public License
+ * which is available at https://creativecommons.org/licenses/by/4.0/.
+ *
+ * SPDX-License-Identifier: CC-BY-4.0
+ *
+ * Contributors:
+ *   Alicia Sykes - original author
+ *   The Eclipse foundation - adaptation and modifications
+`;
+
+export const original_license = `
 The MIT License (MIT)
-Copyright (c) 2024 Eclipse Foundation, and others
 Copyright (c) Alicia Sykes <alicia@aliciasykes.com> 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy 
@@ -115,4 +128,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL
 THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-`;
+`

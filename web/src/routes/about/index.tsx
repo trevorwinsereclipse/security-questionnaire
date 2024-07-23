@@ -1,8 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
-import Icon from "~/components/core/icon";
-import { intro, license } from './about-content';
+// import Icon from "~/components/core/icon";
+import { intro, eclipse_license, original_license } from './about-content';
 // import { marked } from "marked";
 
 export default component$(() => {
@@ -122,24 +122,18 @@ export default component$(() => {
           under <b><a href="https://gist.github.com/Lissy93/143d2ee01ccc5c052a17">MIT</a></b>.
         </p>
         <pre class="bg-front whitespace-break-spaces rounded text-xs my-2 mx-auto p-2">
-          {license}
+          {eclipse_license}
         </pre>
-        {/* <details class="collapse">
+        <details class="collapse">
           <summary class="collapse-title">
-            <h3 class="mt-2">What does this means for you?</h3>
+            <h3 class="mt-2">Original License</h3>
           </summary>
           <div class="collapse-content">
-            <p class="mb-2">
-              This means that for everything (except the checklist YAML file), you have almost unlimited freedom to
-              use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of this software.
-              All that we ask is that you include the original copyright notice and permission notice in any copies of the software
-            </p>
-            <p class="mb-2">
-              And for the security-list content you can share and adapt this content as long as you give appropriate credit,
-              don't use it for commercial purposes, and distribute your contributions under the same license.
-            </p>
+            <pre class="bg-front whitespace-break-spaces rounded text-xs my-2 mx-auto p-2">
+              {original_license}
+            </pre>
           </div>
-        </details> */}
+        </details>
 
       </article>
 
