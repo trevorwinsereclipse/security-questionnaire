@@ -118,18 +118,13 @@ export default component$(() => {
       <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
         <h2 class="text-3xl mb-2">License</h2>
         <p>
-          This project is split-licensed, with the checklist content (located
-          in <a class="link" href="https://github.com/Lissy93/personal-security-checklist/blob/HEAD/personal-security-checklist.yml">
-            <code>personal-security-checklist.yml</code>
-          </a>) being licensed
-          under <b><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></b>.
-          And everything else (including all the code), licensed
+          This project is licensed
           under <b><a href="https://gist.github.com/Lissy93/143d2ee01ccc5c052a17">MIT</a></b>.
         </p>
         <pre class="bg-front whitespace-break-spaces rounded text-xs my-2 mx-auto p-2">
           {license}
         </pre>
-        <details class="collapse">
+        {/* <details class="collapse">
           <summary class="collapse-title">
             <h3 class="mt-2">What does this means for you?</h3>
           </summary>
@@ -144,7 +139,7 @@ export default component$(() => {
               don't use it for commercial purposes, and distribute your contributions under the same license.
             </p>
           </div>
-        </details>
+        </details> */}
 
       </article>
 
