@@ -9,6 +9,7 @@ export default component$((props: { section: Section }) => {
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
   const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
+  const [setProgressScore] = useLocalStorage('PSC_PROGRESS_SCORE', 0);
 
   const sortState = useStore({ column: '', ascending: true });
   const checklist = useSignal<Checklist[]>(props.section.checklist);
@@ -61,7 +62,6 @@ export default component$((props: { section: Section }) => {
     } else {
       data[pointId] = column;
     }
-
     setCompleted(data);
   });
 
@@ -110,12 +110,12 @@ export default component$((props: { section: Section }) => {
     }
   });
 
-  const calculateProgress = (): { done: number, total: number, percent: number, disabled: number, progressScore: number } => {
+  const calculateProgress = (): { done: number, total: number, percent: number, disabled: number, score: number } => {
     let done = 0;
     let disabled = 0;
     let total = 0;
-    let progressScore = 0;
-
+    let score = 0;
+  
     props.section.checklist.forEach((item) => {
       const itemId = generateId(item.point);
       if (isIgnored(itemId)) {
@@ -124,24 +124,29 @@ export default component$((props: { section: Section }) => {
         done += 1;
         switch (completed.value[itemId]) {
           case 1:
-            progressScore += 1;
+            score += 1;
             break;
           case 2:
-            progressScore += 0.5;
+            score += 0.5;
             break;
           case 3:
-            progressScore += 0;
+            score += 0;
             break;
         }
       }
       total += 1;
     });
-
+  
     const percent = Math.round((done / total) * 100);
-    return { done, total: props.section.checklist.length, percent, disabled, progressScore };
+  
+    // Update progress score in local storage
+    // setProgressScore(score);
+  
+    return { done, total: props.section.checklist.length, percent, disabled, score };
   };
+  
 
-  const { done, total, percent, disabled, progressScore } = calculateProgress();
+  const { done, total, percent, disabled, score } = calculateProgress();
 
   return (
     <>
@@ -152,7 +157,7 @@ export default component$((props: { section: Section }) => {
             {done} out of {total} ({percent}%)
             complete, {disabled} ignored</p>
           <p class="text-xs text-center">
-            Progress Score: {progressScore.toFixed(2)}</p>
+            Progress Score: {score.toFixed(2)}</p>
         </div>
       </div>
 
