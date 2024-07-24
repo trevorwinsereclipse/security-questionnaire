@@ -138,13 +138,12 @@ export default component$((props: { section: Section }) => {
         disabled += 1;
       } else if (Object.keys(completed.value).includes(itemId)) {
         done += 1;
-      } else {
-        total += 1;
       }
+      total += 1;
     });
 
     const percent = Math.round((done / total) * 100);
-    return { done, total: props.section.checklist.length, percent, disabled: 0 };
+    return { done, total: props.section.checklist.length, percent, disabled };
   };
 
   const { done, total, percent, disabled } = calculateProgress();
@@ -226,7 +225,6 @@ export default component$((props: { section: Section }) => {
                   />
                 </td>
                 <td class="text-center">
-                  <label for={`ignore-${itemId}`} class="text-small block opacity-50 mt-2">Ignore</label>
                   <input
                     type="checkbox"
                     id={`ignore-${itemId}`}
