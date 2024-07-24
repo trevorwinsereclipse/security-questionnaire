@@ -9,7 +9,7 @@ import styles from './psc.module.css';
 export default component$((props: { section: Section }) => {
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
-
+  const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
   // const showFilters = useSignal(false);
   // const { stage } = useCSSTransition(showFilters, { timeout: 300 });
 
@@ -49,6 +49,9 @@ export default component$((props: { section: Section }) => {
 
   const parseMarkdown = (text: string | undefined): string => {
     return marked.parse(text || '', { async: false }) as string || '';
+  };
+  const isIgnored = (pointId: string) => {
+    return ignored.value[pointId] || false;
   };
 
   const isChecked = (pointId: string, column: number) => {
@@ -126,21 +129,25 @@ export default component$((props: { section: Section }) => {
 
   const calculateProgress = (): { done: number, total: number, percent: number, disabled: number } => {
     let done = 0;
+    let disabled = 0;
     let total = 0;
 
     props.section.checklist.forEach((item) => {
       const itemId = generateId(item.point);
-      if (Object.keys(completed.value).includes(itemId)) {
+      if (isIgnored(itemId)) {
+        disabled += 1;
+      } else if (Object.keys(completed.value).includes(itemId)) {
         done += 1;
+      } else {
+        total += 1;
       }
-      total += 1;
     });
 
     const percent = Math.round((done / total) * 100);
     return { done, total: props.section.checklist.length, percent, disabled: 0 };
   };
 
-  const { done, total, percent } = calculateProgress();
+  const { done, total, percent, disabled } = calculateProgress();
 
   return (
     <>
@@ -148,8 +155,8 @@ export default component$((props: { section: Section }) => {
         <div>
           <progress class="progress w-64" value={percent} max="100"></progress>
           <p class="text-xs text-center">
-            {done} out of {total} ({percent}%) complete
-          </p>
+            {done} out of {total} ({percent}%)
+            complete, {disabled} ignored</p>
         </div>
       </div>
 
@@ -194,6 +201,7 @@ export default component$((props: { section: Section }) => {
                     class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
                     id={`done-${itemId}-1`}
                     checked={isChecked(itemId, 1)}
+                    disabled={isIgnored(itemId)}
                     onClick$={() => handleCheckboxClick(itemId, 1)}
                   />
                 </td>
@@ -203,6 +211,7 @@ export default component$((props: { section: Section }) => {
                     class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
                     id={`done-${itemId}-2`}
                     checked={isChecked(itemId, 2)}
+                    disabled={isIgnored(itemId)}
                     onClick$={() => handleCheckboxClick(itemId, 2)}
                   />
                 </td>
@@ -212,18 +221,29 @@ export default component$((props: { section: Section }) => {
                     class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
                     id={`done-${itemId}-3`}
                     checked={isChecked(itemId, 3)}
+                    disabled={isIgnored(itemId)}
                     onClick$={() => handleCheckboxClick(itemId, 3)}
                   />
                 </td>
                 <td class="text-center">
+                  <label for={`ignore-${itemId}`} class="text-small block opacity-50 mt-2">Ignore</label>
                   <input
                     type="checkbox"
-                    class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
-                    id={`done-${itemId}-4`}
-                    checked={isChecked(itemId, 4)}
-                    onClick$={() => handleCheckboxClick(itemId, 4)}
+                    id={`ignore-${itemId}`}
+                    class={`toggle toggle-xs toggle-${badgeColor}`}
+                    checked={isIgnored(itemId)}
+                    onClick$={() => {
+                      const ignoredData = ignored.value;
+                      ignoredData[itemId] = !ignoredData[itemId];
+                      setIgnored(ignoredData);
+
+                      const completedData = completed.value;
+                      delete completedData[itemId];  // Delete the entry from the completed object
+                      setCompleted(completedData);
+                    }}
                   />
                 </td>
+
                 <td>
                   <label
                     for={`done-${itemId}`}
