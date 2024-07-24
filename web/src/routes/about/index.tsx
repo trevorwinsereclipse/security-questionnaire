@@ -2,7 +2,7 @@ import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 // import Icon from "~/components/core/icon";
-import { intro, eclipse_license, original_license } from './about-content';
+import { intro, license } from './about-content';
 // import { marked } from "marked";
 
 export default component$(() => {
@@ -122,9 +122,9 @@ export default component$(() => {
           under <b><a href="https://gist.github.com/Lissy93/143d2ee01ccc5c052a17">MIT</a></b>.
         </p>
         <pre class="bg-front whitespace-break-spaces rounded text-xs my-2 mx-auto p-2">
-          {eclipse_license}
+          {license}
         </pre>
-        <details class="collapse">
+        {/* <details class="collapse">
           <summary class="collapse-title">
             <h3 class="mt-2">Original License</h3>
           </summary>
@@ -133,7 +133,7 @@ export default component$(() => {
               {original_license}
             </pre>
           </div>
-        </details>
+        </details> */}
 
       </article>
 

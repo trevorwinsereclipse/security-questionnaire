@@ -2,7 +2,7 @@ import { component$ } from "@builder.io/qwik";
 
 export default component$(() => {
 
-  const licenseLink = 'https://github.com/Lissy93/personal-security-checklist/blob/master/LICENSE';
+  const licenseLink = 'https://github.com/trevorwinsereclipse/security-questionnaire/blob/main/LICENSE';
   const authorLink = 'https://eclipse.org';
 
   return (
