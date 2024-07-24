@@ -159,8 +159,7 @@ export default component$((props: { section: Section }) => {
             <th>Always</th>
             <th>Sometimes</th>
             <th>Never</th>
-            <th>Does Not Apply</th>
-            <th>Prefer Not to Answer</th>
+            <th>Ignore</th>
             {[
               { id: 'topic', text: 'Topic' }
             ].map((item) => (
@@ -223,15 +222,6 @@ export default component$((props: { section: Section }) => {
                     id={`done-${itemId}-4`}
                     checked={isChecked(itemId, 4)}
                     onClick$={() => handleCheckboxClick(itemId, 4)}
-                  />
-                </td>
-                <td class="text-center">
-                  <input
-                    type="checkbox"
-                    class={`checkbox checked:checkbox-${badgeColor} hover:checkbox-${badgeColor}`}
-                    id={`done-${itemId}-5`}
-                    checked={isChecked(itemId, 5)}
-                    onClick$={() => handleCheckboxClick(itemId, 5)}
                   />
                 </td>
                 <td>
