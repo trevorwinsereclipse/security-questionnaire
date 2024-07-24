@@ -343,7 +343,7 @@ export default component$(() => {
       </div>
       <div class="flex justify-top flex-col items-center gap-6">
       
-      <div class="w-96"><SectionLinkGrid sections={checklists.value} /></div>
+      {/* <div class="w-96"><SectionLinkGrid sections={checklists.value} /></div> */}
       
       {/* Completion per level */}
       {/* <div class="carousel rounded-box">

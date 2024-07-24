@@ -1,5 +1,4 @@
 import { $, component$, useStore, useSignal } from "@builder.io/qwik";
-// import { useCSSTransition } from "qwik-transition";
 import Icon from "~/components/core/icon";
 import type { Priority, Section, Checklist } from '../../types/PSC';
 import { marked } from "marked";
@@ -10,15 +9,12 @@ export default component$((props: { section: Section }) => {
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
   const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
-  // const showFilters = useSignal(false);
-  // const { stage } = useCSSTransition(showFilters, { timeout: 300 });
 
   const sortState = useStore({ column: '', ascending: true });
-
   const checklist = useSignal<Checklist[]>(props.section.checklist);
 
   const originalFilters = {
-    show: 'all', // 'all', 'remaining', 'completed'
+    show: 'all',
     levels: {
       essential: true,
       optional: true,
@@ -29,7 +25,6 @@ export default component$((props: { section: Section }) => {
 
   const filterState = useStore(originalFilters);
 
-  // Determines color of checkbox
   const getBadgeClass = (priority: Priority, precedeClass: string = '') => {
     switch (priority.toLocaleLowerCase()) {
       case 'essential':
@@ -62,10 +57,8 @@ export default component$((props: { section: Section }) => {
     const data = { ...completed.value };
 
     if (data[pointId] === column) {
-      // If the same checkbox is clicked again, remove the entry
       delete data[pointId];
     } else {
-      // Mark only the clicked checkbox as checked
       data[pointId] = column;
     }
 
@@ -77,11 +70,9 @@ export default component$((props: { section: Section }) => {
     const itemCompleted = Object.keys(completed.value).includes(itemId);
     const itemLevel = item.priority;
 
-    // Filter by completion status
     if (filterState.show === 'remaining' && itemCompleted) return false;
     if (filterState.show === 'completed' && !itemCompleted) return false;
 
-    // Filter by level
     return filterState.levels[itemLevel.toLocaleLowerCase() as Priority];
   });
 
@@ -111,26 +102,19 @@ export default component$((props: { section: Section }) => {
   };
 
   const handleSort = $((column: string) => {
-    if (sortState.column === column) { // Reverse direction if same column
+    if (sortState.column === column) {
       sortState.ascending = !sortState.ascending;
-    } else { // Sort table by column
+    } else {
       sortState.column = column;
-      sortState.ascending = true; // Default to ascending
+      sortState.ascending = true;
     }
   });
 
-  // const resetFilters = $(() => {
-  //   checklist.value = props.section.checklist;
-  //   sortState.column = '';
-  //   sortState.ascending = true;
-  //   filterState.levels = originalFilters.levels;
-  //   filterState.show = originalFilters.show;
-  // });
-
-  const calculateProgress = (): { done: number, total: number, percent: number, disabled: number } => {
+  const calculateProgress = (): { done: number, total: number, percent: number, disabled: number, progressScore: number } => {
     let done = 0;
     let disabled = 0;
     let total = 0;
+    let progressScore = 0;
 
     props.section.checklist.forEach((item) => {
       const itemId = generateId(item.point);
@@ -138,15 +122,26 @@ export default component$((props: { section: Section }) => {
         disabled += 1;
       } else if (Object.keys(completed.value).includes(itemId)) {
         done += 1;
+        switch (completed.value[itemId]) {
+          case 1:
+            progressScore += 1;
+            break;
+          case 2:
+            progressScore += 0.5;
+            break;
+          case 3:
+            progressScore += 0;
+            break;
+        }
       }
       total += 1;
     });
 
     const percent = Math.round((done / total) * 100);
-    return { done, total: props.section.checklist.length, percent, disabled };
+    return { done, total: props.section.checklist.length, percent, disabled, progressScore };
   };
 
-  const { done, total, percent, disabled } = calculateProgress();
+  const { done, total, percent, disabled, progressScore } = calculateProgress();
 
   return (
     <>
@@ -156,6 +151,8 @@ export default component$((props: { section: Section }) => {
           <p class="text-xs text-center">
             {done} out of {total} ({percent}%)
             complete, {disabled} ignored</p>
+          <p class="text-xs text-center">
+            Progress Score: {progressScore.toFixed(2)}</p>
         </div>
       </div>
 
@@ -166,20 +163,15 @@ export default component$((props: { section: Section }) => {
             <th>Sometimes</th>
             <th>Never</th>
             <th>Ignore</th>
-            {[
-              { id: 'topic', text: 'Topic' }
-            ].map((item) => (
-              <th
-                key={item.id}
-                class="cursor-pointer"
-                onClick$={() => handleSort(item.id)}
-              >
-                <span class="flex items-center gap-0.5 hover:text-primary transition">
-                  <Icon width={12} height={14} icon="sort" />
-                  {item.text}
-                </span>
-              </th>
-            ))}
+            <th
+              class="cursor-pointer"
+              onClick$={() => handleSort('topic')}
+            >
+              <span class="flex items-center gap-0.5 hover:text-primary transition">
+                <Icon width={12} height={14} icon="sort" />
+                Topic
+              </span>
+            </th>
             <th>Details</th>
           </tr>
         </thead>
@@ -236,7 +228,7 @@ export default component$((props: { section: Section }) => {
                       setIgnored(ignoredData);
 
                       const completedData = completed.value;
-                      delete completedData[itemId];  // Delete the entry from the completed object
+                      delete completedData[itemId];
                       setCompleted(completedData);
                     }}
                   />
