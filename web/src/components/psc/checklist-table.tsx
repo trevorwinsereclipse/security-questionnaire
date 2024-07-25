@@ -139,8 +139,6 @@ export default component$((props: { section: Section }) => {
     });
   
     const percent = Math.round((done / total) * 100);
-    setProgressScore(score);
-    // console.log("Progress calculated");
     return { done, total: props.section.checklist.length, percent, disabled, score };
   };
   
@@ -155,7 +153,7 @@ export default component$((props: { section: Section }) => {
             {done} out of {total} ({percent}%)
             complete, {disabled} ignored</p>
           <p class="text-xs text-center">
-            Progress Score: {score.toFixed(2)}</p>
+            Progress Score: {progressScore.value.toFixed(2)}</p>
         </div>
       </div>
 
@@ -196,7 +194,10 @@ export default component$((props: { section: Section }) => {
                     id={`done-${itemId}-1`}
                     checked={isChecked(itemId, 1)}
                     disabled={isIgnored(itemId)}
-                    onClick$={() => handleCheckboxClick(itemId, 1)}
+                    onClick$={() => {
+                      handleCheckboxClick(itemId, 1);
+                      setProgressScore(score);
+                    }}
                   />
                 </td>
                 <td class="text-center">
@@ -206,7 +207,10 @@ export default component$((props: { section: Section }) => {
                     id={`done-${itemId}-2`}
                     checked={isChecked(itemId, 2)}
                     disabled={isIgnored(itemId)}
-                    onClick$={() => handleCheckboxClick(itemId, 2)}
+                    onClick$={() => {
+                      handleCheckboxClick(itemId, 2);
+                      setProgressScore(score);
+                    }}
                   />
                 </td>
                 <td class="text-center">
@@ -216,7 +220,10 @@ export default component$((props: { section: Section }) => {
                     id={`done-${itemId}-3`}
                     checked={isChecked(itemId, 3)}
                     disabled={isIgnored(itemId)}
-                    onClick$={() => handleCheckboxClick(itemId, 3)}
+                    onClick$={() => {
+                      handleCheckboxClick(itemId, 3);
+                      setProgressScore(score);
+                    }}
                   />
                 </td>
                 <td class="text-center">
@@ -233,7 +240,9 @@ export default component$((props: { section: Section }) => {
                       const completedData = completed.value;
                       delete completedData[itemId];
                       setCompleted(completedData);
-                      // console.log(score);
+                      setProgressScore(score);
+                      console.log(progressScore);
+                      console.log("Score Logged");
                     }}
                   />
                 </td>
