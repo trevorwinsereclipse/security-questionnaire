@@ -9,7 +9,7 @@ export default component$((props: { section: Section }) => {
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
   const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
-  const [setProgressScore] = useLocalStorage('PSC_PROGRESS_SCORE', 0);
+  const [progressScore, setProgressScore] = useLocalStorage('PSC_PROGRESS_SCORE', 0);
 
   const sortState = useStore({ column: '', ascending: true });
   const checklist = useSignal<Checklist[]>(props.section.checklist);
@@ -63,8 +63,6 @@ export default component$((props: { section: Section }) => {
       data[pointId] = column;
     }
     setCompleted(data);
-    // Update progress score in local storage
-    setProgressScore(score);
   });
 
   const filteredChecklist = checklist.value.filter((item) => {
@@ -141,13 +139,13 @@ export default component$((props: { section: Section }) => {
     });
   
     const percent = Math.round((done / total) * 100);
-  
+    setProgressScore(score);
+    // console.log("Progress calculated");
     return { done, total: props.section.checklist.length, percent, disabled, score };
   };
   
 
   const { done, total, percent, disabled, score } = calculateProgress();
-
   return (
     <>
       <div class="flex flex-wrap justify-between items-center">
@@ -235,6 +233,7 @@ export default component$((props: { section: Section }) => {
                       const completedData = completed.value;
                       delete completedData[itemId];
                       setCompleted(completedData);
+                      // console.log(score);
                     }}
                   />
                 </td>
