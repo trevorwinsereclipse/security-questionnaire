@@ -63,6 +63,8 @@ export default component$((props: { section: Section }) => {
       data[pointId] = column;
     }
     setCompleted(data);
+    // Update progress score in local storage
+    setProgressScore(score);
   });
 
   const filteredChecklist = checklist.value.filter((item) => {
@@ -120,6 +122,7 @@ export default component$((props: { section: Section }) => {
       const itemId = generateId(item.point);
       if (isIgnored(itemId)) {
         disabled += 1;
+        done += 1;
       } else if (Object.keys(completed.value).includes(itemId)) {
         done += 1;
         switch (completed.value[itemId]) {
@@ -138,9 +141,6 @@ export default component$((props: { section: Section }) => {
     });
   
     const percent = Math.round((done / total) * 100);
-  
-    // Update progress score in local storage
-    // setProgressScore(score);
   
     return { done, total: props.section.checklist.length, percent, disabled, score };
   };

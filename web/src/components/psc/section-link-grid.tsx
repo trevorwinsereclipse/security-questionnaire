@@ -13,7 +13,7 @@ export default component$((props: { sections: Section[] }) => {
 
   // Get the IDs of completed and ignore items from local storage
   const [checked] = useLocalStorage('PSC_PROGRESS', {});
-  // const [ignored] = useLocalStorage('PSC_IGNORED', {});
+  const [ignored] = useLocalStorage('PSC_IGNORED', {});
 
   /**
    * Get the percentage of completion for a given section
@@ -21,11 +21,11 @@ export default component$((props: { sections: Section[] }) => {
    */
   const getPercentCompletion = $((section: Section): number => {
     const id = (item: Checklist) => item.point.toLowerCase().replace(/ /g, '-')
-    const total = section.checklist.length;
+    const total = section.checklist.filter((item) => !ignored.value[id(item)]).length;
     const done = section.checklist.filter((item) => checked.value[id(item)]).length;
     return Math.round((done / total) * 100);
   });
-
+  
   // On load (in browser only), calculate and set completion data for sections
   useOnWindow('load', $(async () => {
     // Percentage completion, per section
