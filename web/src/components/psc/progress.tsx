@@ -137,7 +137,7 @@ export default component$(() => {
         .then((progress) => {
           const { completed, outOf } = progress;
           const percent = Math.round((completed / outOf) * 100);
-          drawProgress(percent, `#${priority}-container`, color);
+          // drawProgress(percent, `#${priority}-container`, color);
         });
     });
   });
@@ -160,20 +160,7 @@ export default component$(() => {
   /**
    * Calculates the percentage of completion for each section
    */
-  useOnWindow('load', $(async () => {
-    const sectionScores = await Promise.all(checklists.value.map(async (section: Section) => {
-      const progress = await calculateProgress([section]);
-      const percent = Math.round((progress.completed / progress.outOf) * 100);
-      return { title: section.title, score: percent };
-    }));
 
-    // Update progressScore with calculated section scores
-    const newProgressScores = { ...progressScore, ...Object.fromEntries(sectionScores.map(({ title, score }) => [title, score])) };
-    setProgressScore(newProgressScores);
-
-    // Set section completion percentages
-    sectionCompletion.value = sectionScores.map(({ score }) => score);
-  }));
 
   interface RadarChartData {
     labels: string[];
@@ -274,9 +261,7 @@ export default component$(() => {
       }
     });
   }));
-
-  console.log(progressScore);
-
+  console.log(progressScore.value);
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
     <div class="flex justify-center flex-wrap items-stretch gap-6 mb-4 relative">

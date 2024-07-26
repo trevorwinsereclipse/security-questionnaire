@@ -9,7 +9,7 @@ export default component$((props: { section: Section }) => {
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
   const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
-  const [progressScore, setProgressScore] = useLocalStorage('PSC_PROGRESS_SCORE', 0);
+  const [progressScore, setProgressScore] = useLocalStorage('PSC_PROGRESS_SCORE', {});
 
   const sortState = useStore({ column: '', ascending: true });
   const checklist = useSignal<Checklist[]>(props.section.checklist);
@@ -144,7 +144,7 @@ export default component$((props: { section: Section }) => {
   };
 
   const { done, total, percent, disabled, score } = calculateProgress();
-
+  console.log(progressScore);
   return (
     <>
       <div class="flex flex-wrap justify-between items-center">
@@ -199,7 +199,6 @@ export default component$((props: { section: Section }) => {
                       handleCheckboxClick(itemId, 1);
                       const data = { ...progressScore.value};
                       data[props.section.title] = score;
-                      console.log(data);
                       setProgressScore(data);
                     }}
                   />
@@ -214,8 +213,7 @@ export default component$((props: { section: Section }) => {
                     onClick$={() => {
                       handleCheckboxClick(itemId, 2);
                       const data = { ...progressScore.value};
-                      data[props.section.title] = score;
-                      console.log(data);
+                      data[props.section.title] = score; 
                       setProgressScore(data);
                     }}
                   />
@@ -231,7 +229,6 @@ export default component$((props: { section: Section }) => {
                       handleCheckboxClick(itemId, 3);
                       const data = { ...progressScore.value};
                       data[props.section.title] = score;
-                      console.log(data);
                       setProgressScore(data);
                     }}
                   />
@@ -251,7 +248,6 @@ export default component$((props: { section: Section }) => {
                       setCompleted(completedData);
                       const data = { ...progressScore.value};
                       data[props.section.title] = score;
-                      console.log(data);
                       setProgressScore(data);
                     }}
                   />
