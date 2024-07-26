@@ -21,7 +21,7 @@ export default component$(() => {
   // Ignored items, from local storage
   const [ignoredItems] = useLocalStorage('PSC_IGNORED', {});
   // Progress score for sections
-  const [progressScore, setProgressScore] = useLocalStorage('PSC_PROGRESS_SCORE', {});
+  const [progressScore] = useLocalStorage('PSC_PROGRESS_SCORE', {});
 
   // Local storage for closing and ignoring the welcome dialog
   const [ignoreDialog, setIgnoreDialog] = useLocalStorage('PSC_CLOSE_WELCOME', false);
@@ -137,7 +137,7 @@ export default component$(() => {
         .then((progress) => {
           const { completed, outOf } = progress;
           const percent = Math.round((completed / outOf) * 100);
-          // drawProgress(percent, `#${priority}-container`, color);
+          drawProgress(percent, `#${priority}-container`, color);
         });
     });
   });
