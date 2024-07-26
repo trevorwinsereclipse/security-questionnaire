@@ -197,7 +197,10 @@ export default component$((props: { section: Section }) => {
                     disabled={isIgnored(itemId)}
                     onClick$={() => {
                       handleCheckboxClick(itemId, 1);
-                      setProgressScore(score);
+                      const data = { ...progressScore.value};
+                      data[props.section.title] = score;
+                      console.log(data);
+                      setProgressScore(data);
                     }}
                   />
                 </td>
@@ -210,7 +213,10 @@ export default component$((props: { section: Section }) => {
                     disabled={isIgnored(itemId)}
                     onClick$={() => {
                       handleCheckboxClick(itemId, 2);
-                      setProgressScore(score);
+                      const data = { ...progressScore.value};
+                      data[props.section.title] = score;
+                      console.log(data);
+                      setProgressScore(data);
                     }}
                   />
                 </td>
@@ -223,7 +229,10 @@ export default component$((props: { section: Section }) => {
                     disabled={isIgnored(itemId)}
                     onClick$={() => {
                       handleCheckboxClick(itemId, 3);
-                      setProgressScore(score);
+                      const data = { ...progressScore.value};
+                      data[props.section.title] = score;
+                      console.log(data);
+                      setProgressScore(data);
                     }}
                   />
                 </td>
@@ -237,11 +246,13 @@ export default component$((props: { section: Section }) => {
                       const ignoredData = ignored.value;
                       ignoredData[itemId] = !ignoredData[itemId];
                       setIgnored(ignoredData);
-
                       const completedData = completed.value;
                       delete completedData[itemId];
                       setCompleted(completedData);
-                      setProgressScore(score);
+                      const data = { ...progressScore.value};
+                      data[props.section.title] = score;
+                      console.log(data);
+                      setProgressScore(data);
                     }}
                   />
                 </td>

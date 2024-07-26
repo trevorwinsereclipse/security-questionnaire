@@ -5,7 +5,7 @@ import { useLocalStorage } from "~/hooks/useLocalStorage";
 import { ChecklistContext } from "~/store/checklist-context";
 import type { Priority, Sections, Section } from '~/types/PSC';
 import Icon from '~/components/core/icon';
-// import SectionLinkGrid from "~/components/psc/section-link-grid";
+
 /**
  * Component for client-side user progress metrics.
  * Combines checklist data with progress from local storage,
@@ -21,16 +21,16 @@ export default component$(() => {
   // Ignored items, from local storage
   const [ignoredItems] = useLocalStorage('PSC_IGNORED', {});
   // Progress score for sections
-  const [progressScore] = useLocalStorage('PSC_PROGRESS_SCORE', 0);
-  
+  const [progressScore, setProgressScore] = useLocalStorage('PSC_PROGRESS_SCORE', {});
+
   // Local storage for closing and ignoring the welcome dialog
   const [ignoreDialog, setIgnoreDialog] = useLocalStorage('PSC_CLOSE_WELCOME', false);
   // Store to hold calculated progress results
-  const totalProgress = useSignal({ completed: 0, outOf: 0 });
+  const totalProgress = useSignal<{ completed: number, outOf: number }>({ completed: 0, outOf: 0 });
   // Ref to the radar chart canvas
-  const radarChart  = useSignal<HTMLCanvasElement>();
+  const radarChart = useSignal<HTMLCanvasElement>();
   // Completion data for each section
-  const sectionCompletion =  useSignal<number[]>([]);
+  const sectionCompletion = useSignal<number[]>([]);
 
   /**
    * Calculates the users progress over specified sections.
@@ -59,7 +59,6 @@ export default component$(() => {
       });
     });
     return { completed: totalComplete, outOf: totalItems };
-    // return Math.round((totalComplete / totalItems) * 100);
   });
 
   /**
@@ -97,7 +96,7 @@ export default component$(() => {
     const red = `hsl(${getCssVariableValue('--er', '0 91% 71%')})`;
     const green = `hsl(${getCssVariableValue('--su', '158 64% 52%')})`;
     const labelStyles = {
-      color: foregroundColor, position: 'absolute', right: '0.5rem',  top: '2rem'
+      color: foregroundColor, position: 'absolute', right: '0.5rem', top: '2rem'
     };
     // Animations to occur on each step of the progress bar
     const stepFunction = (state: any, bar: any) => {
@@ -137,9 +136,9 @@ export default component$(() => {
       calculateProgress(sections)
         .then((progress) => {
           const { completed, outOf } = progress;
-          const percent = Math.round((completed / outOf) * 100)
-          drawProgress(percent, `#${priority}-container`, color)
-        })
+          const percent = Math.round((completed / outOf) * 100);
+          drawProgress(percent, `#${priority}-container`, color);
+        });
     });
   });
 
@@ -148,29 +147,33 @@ export default component$(() => {
    * Initiate the filtering, calculation and rendering of progress charts
    */
   useOnWindow('load', $(() => {
-
     calculateProgress(checklists.value)
       .then((progress) => {
         totalProgress.value = progress;
-    })
+    });
 
     makeDataAndDrawChart('essential', 'hsl(var(--su, 158 64% 52%))');
     // makeDataAndDrawChart('optional', 'hsl(var(--wa, 43 96% 56%))');
     // makeDataAndDrawChart('advanced', 'hsl(var(--er, 0 91% 71%))');
   }));
 
-
   /**
    * Calculates the percentage of completion for each section
    */
   useOnWindow('load', $(async () => {
-    sectionCompletion.value = await Promise.all(checklists.value.map(section => {
-      return calculateProgress([section]).then(
-        (progress) => Math.round(progress.completed / progress.outOf * 100)
-      );
+    const sectionScores = await Promise.all(checklists.value.map(async (section: Section) => {
+      const progress = await calculateProgress([section]);
+      const percent = Math.round((progress.completed / progress.outOf) * 100);
+      return { title: section.title, score: percent };
     }));
-  }));
 
+    // Update progressScore with calculated section scores
+    const newProgressScores = { ...progressScore, ...Object.fromEntries(sectionScores.map(({ title, score }) => [title, score])) };
+    setProgressScore(newProgressScores);
+
+    // Set section completion percentages
+    sectionCompletion.value = sectionScores.map(({ score }) => score);
+  }));
 
   interface RadarChartData {
     labels: string[];
@@ -205,23 +208,21 @@ export default component$(() => {
       return Promise.all(sections.map(section => calculatePercentage(section, priority)))
         .then(data => ({
           ...datasetTemplate,
-          label: priority.charAt(0).toUpperCase() + priority.slice(1),
-          data: data,
+          label: priority,
+          data,
           backgroundColor: color,
         }));
     };
-  
-    // Wait on each set to resolve, and return the final data object
+
     return Promise.all([
-      // buildDataForPriority('advanced', 'hsl(0 91% 71%/75%)'),
+      buildDataForPriority('essential', 'hsl(158 64% 52%/75%)'),
       // buildDataForPriority('optional', 'hsl(43 96% 56%/75%)'),
-      buildDataForPriority('essential', 'hsl(158 64% 52%/75%)'),      
+      // buildDataForPriority('advanced', 'hsl(0 91% 71%/75%)')
     ]).then(datasets => ({
-      labels,
-      datasets,
+      labels: labels,
+      datasets: datasets
     }));
   });
-  
 
   useOnWindow('load', $(() => {
     Chart.register(...registerables);
@@ -270,60 +271,55 @@ export default component$(() => {
             },
           }
         });
-        
       }
     });
   }));
 
-  // const items = [
-  //   { id: 'essential-container', label: 'Essential' },
-    // { id: 'optional-container', label: 'Optional' },
-    // { id: 'advanced-container', label: 'Advanced' },
-  // ];
+  console.log(progressScore);
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
-  <div class="flex justify-center flex-wrap items-stretch gap-6 mb-4 relative">
-    {(!ignoreDialog.value && (!Object.keys(checkedItems.value).length) ) && (
-    <div class="
-      px-16 py-8 top-1/3 z-10 max-w-lg
-      absolute flex flex-col justify-center bg-gray-600 rounded-md bg-clip-padding
-      backdrop-filter backdrop-blur-md bg-opacity-40 border border-stone-800">
-        <button
-          class="absolute top-1 right-1 btn btn-sm opacity-50"
-          onClick$={() => setIgnoreDialog(true)}
+    <div class="flex justify-center flex-wrap items-stretch gap-6 mb-4 relative">
+      {(!ignoreDialog.value && (!Object.keys(checkedItems.value).length)) && (
+        <div class="
+          px-16 py-8 top-1/3 z-10 max-w-lg
+          absolute flex flex-col justify-center bg-gray-600 rounded-md bg-clip-padding
+          backdrop-filter backdrop-blur-md bg-opacity-40 border border-stone-800">
+          <button
+            class="absolute top-1 right-1 btn btn-sm opacity-50"
+            onClick$={() => setIgnoreDialog(true)}
           >Close</button>
-        <p class="text-xl block text-center font-bold">No stats yet</p>
-        <p class="w-md text-left my-2">You'll see your progress here, once you start ticking items off the checklists</p>
-        <p class="w-md text-left my-2">Get started, by selecting a checklist below</p>
-      </div>
-    )}
+          <p class="text-xl block text-center font-bold">No stats yet</p>
+          <p class="w-md text-left my-2">You'll see your progress here, once you start ticking items off the checklists</p>
+          <p class="w-md text-left my-2">Get started, by selecting a checklist below</p>
+        </div>
+      )}
       <div class="flex justify-top flex-col items-center gap-6">
         {/* Progress Percent */}
         <div class="rounded-box bg-front shadow-md w-96 p-4">
-            <h3 class="text-primary text-2xl">Your Progress</h3>
-            <p class="text-lg">
-              You've completed <b>{totalProgress.value.completed} out of {totalProgress.value.outOf}</b> items
-            </p>
-            <progress
-              class="progress w-80"
-              value={totalProgress.value.completed}
-              max={totalProgress.value.outOf}>
-            </progress>
+          <h3 class="text-primary text-2xl">Your Progress</h3>
+          <p class="text-lg">
+            You've completed <b>{totalProgress.value.completed} out of {totalProgress.value.outOf}</b> items
+          </p>
+          <progress
+            class="progress w-80"
+            value={totalProgress.value.completed}
+            max={totalProgress.value.outOf}>
+          </progress>
         </div>
         {/* Remaining Tasks */}
         <div class="p-4 rounded-box bg-front shadow-md w-96">
           <ul>
-            { checklists.value.map((section: Section, index: number) => (
-                <li key={index}>
-                  <a
-                    href={`/checklist/${section.slug}`}
-                    class={[
-                      'my-2 w-80 flex justify-between items-center tooltip transition',
-                      `hover:text-${section.color}-400`
-                    ]}
-                    data-tip={`Completed ${sectionCompletion.value[index]}% of ${section.checklist.length} items.`}
-                  >
+            {checklists.value.map((section: Section, index: number) => (
+              <li key={index}>
+                <a
+                  href={`/checklist/${section.slug}`}
+                  class={[
+                    'my-2 w-80 flex justify-between items-center tooltip transition',
+                    `hover:text-${section.color}-400`
+                  ]}
+                  data-tip={`Completed ${sectionCompletion.value[index]}% of ${section.checklist.length} items.`}
+                >
                   <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-40">
                     <Icon icon={section.icon} width={14} />
                     {section.title}
@@ -333,8 +329,8 @@ export default component$(() => {
                       class={`block h-full transition bg-${section.color}-400`}
                       style={`width: ${sectionCompletion.value[index] || 0}%;`}></span>
                   </div>
-                  </a>
-                </li>
+                </a>
+              </li>
             ))}
           </ul>
         </div>
@@ -343,38 +339,12 @@ export default component$(() => {
       <div class="rounded-box bg-front shadow-md w-96 p-4">
         <canvas ref={radarChart} id="myChart"></canvas>
       </div>
-      <div class="flex justify-top flex-col items-center gap-6">
-        <progress
-          class="progress w-80"
-          value={progressScore.value}
-          max={100}>
-        </progress>
-      {/* <div class="w-96"><SectionLinkGrid sections={checklists.value} /></div> */}
-      
-      {/* Completion per level */}
-      {/* <div class="carousel rounded-box">
-      {items.map((item) => (
-        <div
-          key={item.id}
-          class="flex flex-col justify-items-center carousel-item w-20 p-4
-                bg-front shadow-md mx-2.5 rounded-box">
-          <div class="relative" id={item.id}></div>
-          <p class="text-center">{item.label}</p>
-        </div>
+      <div class="rounded-box bg-front shadow-md w-96 p-4">
+        {checklists.value.map((section: Section) => (
+          <div key={section.slug}><progress class="progress w-36" max="100" value={progressScore.value[section.title] || 0 }>
+          </progress></div>
         ))}
-      </div> */}
-      {/* Something ??? */}
-      {/* <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
-        <p class="text-sm opacity-80 mb-2">
-          Next up, consider switching to more secure and
-          privacy-respecting apps and services.
-        </p>
-        <p class="text-lg">
-          View our directory of recommended software,
-          at <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
-        </p>
-      </div> */}
+      </div>
     </div>
-  </div>
   );
 });
