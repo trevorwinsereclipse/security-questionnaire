@@ -46,6 +46,7 @@ export default component$((props: { section: Section }) => {
   const parseMarkdown = (text: string | undefined): string => {
     return marked.parse(text || '', { async: false }) as string || '';
   };
+
   const isIgnored = (pointId: string) => {
     return ignored.value[pointId] || false;
   };
@@ -53,6 +54,15 @@ export default component$((props: { section: Section }) => {
   const isChecked = (pointId: string, column: number) => {
     return completed.value[pointId] && completed.value[pointId] === column;
   };
+
+  const handleSort = $((column: string) => {
+    if (sortState.column === column) {
+      sortState.ascending = !sortState.ascending;
+    } else {
+      sortState.column = column;
+      sortState.ascending = true;
+    }
+  });
 
   const handleCheckboxClick = $((pointId: string, column: number) => {
     const data = { ...completed.value };
@@ -101,21 +111,12 @@ export default component$((props: { section: Section }) => {
     }
   };
 
-  const handleSort = $((column: string) => {
-    if (sortState.column === column) {
-      sortState.ascending = !sortState.ascending;
-    } else {
-      sortState.column = column;
-      sortState.ascending = true;
-    }
-  });
-
   const calculateProgress = (): { done: number, total: number, percent: number, disabled: number, score: number } => {
     let done = 0;
     let disabled = 0;
     let total = 0;
     let score = 0;
-  
+
     props.section.checklist.forEach((item) => {
       const itemId = generateId(item.point);
       if (isIgnored(itemId)) {
@@ -137,13 +138,13 @@ export default component$((props: { section: Section }) => {
       }
       total += 1;
     });
-  
+    score = Math.round(score / total * 100)
     const percent = Math.round((done / total) * 100);
     return { done, total: props.section.checklist.length, percent, disabled, score };
   };
-  
 
   const { done, total, percent, disabled, score } = calculateProgress();
+
   return (
     <>
       <div class="flex flex-wrap justify-between items-center">
@@ -153,7 +154,7 @@ export default component$((props: { section: Section }) => {
             {done} out of {total} ({percent}%)
             complete, {disabled} ignored</p>
           <p class="text-xs text-center">
-            Progress Score: {progressScore.value.toFixed(2)}</p>
+            Score: {score.toFixed(2)}%</p>
         </div>
       </div>
 
@@ -241,8 +242,6 @@ export default component$((props: { section: Section }) => {
                       delete completedData[itemId];
                       setCompleted(completedData);
                       setProgressScore(score);
-                      console.log(progressScore);
-                      console.log("Score Logged");
                     }}
                   />
                 </td>

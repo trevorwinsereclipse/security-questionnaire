@@ -5,7 +5,7 @@ import { useLocalStorage } from "~/hooks/useLocalStorage";
 import { ChecklistContext } from "~/store/checklist-context";
 import type { Priority, Sections, Section } from '~/types/PSC';
 import Icon from '~/components/core/icon';
-import SectionLinkGrid from "~/components/psc/section-link-grid";
+// import SectionLinkGrid from "~/components/psc/section-link-grid";
 /**
  * Component for client-side user progress metrics.
  * Combines checklist data with progress from local storage,
@@ -20,6 +20,9 @@ export default component$(() => {
   const [checkedItems] = useLocalStorage('PSC_PROGRESS', {});
   // Ignored items, from local storage
   const [ignoredItems] = useLocalStorage('PSC_IGNORED', {});
+  // Progress score for sections
+  const [progressScore] = useLocalStorage('PSC_PROGRESS_SCORE', 0);
+  
   // Local storage for closing and ignoring the welcome dialog
   const [ignoreDialog, setIgnoreDialog] = useLocalStorage('PSC_CLOSE_WELCOME', false);
   // Store to hold calculated progress results
@@ -219,7 +222,6 @@ export default component$(() => {
     }));
   });
   
-  
 
   useOnWindow('load', $(() => {
     Chart.register(...registerables);
@@ -342,7 +344,11 @@ export default component$(() => {
         <canvas ref={radarChart} id="myChart"></canvas>
       </div>
       <div class="flex justify-top flex-col items-center gap-6">
-      
+        <progress
+          class="progress w-80"
+          value={progressScore.value}
+          max={100}>
+        </progress>
       {/* <div class="w-96"><SectionLinkGrid sections={checklists.value} /></div> */}
       
       {/* Completion per level */}
