@@ -324,7 +324,7 @@ export default component$(() => {
       <div class="rounded-box bg-front shadow-md w-96 p-4">
         <canvas ref={radarChart} id="myChart"></canvas>
       </div>
-      <div class="rounded-box bg-front shadow-md w-96 p-4 overflow-hidden">
+      <div class="rounded-box bg-front shadow-md w-96 p-4">
         {checklists.value.map((section: Section) => (
           <div 
             key={section.slug} 
