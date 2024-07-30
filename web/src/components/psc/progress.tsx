@@ -261,7 +261,6 @@ export default component$(() => {
       }
     });
   }));
-  console.log(progressScore.value);
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
     <div class="flex justify-center flex-wrap items-stretch gap-6 mb-4 relative">
@@ -324,28 +323,32 @@ export default component$(() => {
       <div class="rounded-box bg-front shadow-md w-96 p-4">
         <canvas ref={radarChart} id="myChart"></canvas>
       </div>
-      <div class="rounded-box bg-front shadow-md w-96 p-4">
-        {checklists.value.map((section: Section) => (
-          <div 
-            key={section.slug} 
-            class={[
-              "my-2 w-80 flex justify-between items-center",
-              `hover:text-${section.color}-400`
-              ]} 
-            data-tip={`Score: ${progressScore.value[section.title] || 0}%`}
-          >
-            <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-40">
-              <Icon icon={section.icon} width={14} />
-              {section.title}
-            </p>
-            <div class="progress w-36">
-              <span 
-                class={`block h-full transition bg-${section.color}-400`}
-                style={`width: ${progressScore.value[section.title] || 0}%;`}></span>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* <div class="flex justify-top flex-col items-center gap-6"> */}
+        <div class="rounded-box bg-front shadow-md w-96 p-4">
+          <h3 class="text-primary text-2xl">Your Scores</h3>
+            {checklists.value.map((section: Section) => (
+              <a 
+                href=""
+                key={section.slug} 
+                class={[
+                  "my-2 w-80 flex justify-between items-center",
+                  `hover:text-${section.color}-400`
+                  ]} 
+                data-tip={`Score: ${progressScore.value[section.title] || 0}%`}
+              >
+                <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-40">
+                  <Icon icon={section.icon} width={14} />
+                  {section.title}
+                </p>
+                <div class="progress w-36">
+                  <span 
+                    class={`block h-full transition bg-${section.color}-400`}
+                    style={`width: ${progressScore.value[section.title] || 0}%;`}></span>
+                </div>
+              </a>
+            ))}
+        </div>
+      {/* </div> */}
     </div>
   );
 });
