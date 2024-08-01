@@ -45,4 +45,4 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 EXPOSE 5000
 
 # Run the application.
-CMD yarn start --host 0.0.0.0 --port 5000
+CMD yarn dev --host 0.0.0.0 --port 5000
