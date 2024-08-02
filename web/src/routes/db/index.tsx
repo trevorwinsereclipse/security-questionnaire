@@ -27,7 +27,7 @@ const progressScores = pgTable('progress_scores', {
 
 const saveProgressScore = async (section: string, score: any) => {
   try {
-    const existingRecords = await db.select().from(progressScores).where(sql`progress_scores.section = ${section}`);
+    const existingRecords = await db.select().from(progressScores).where(sql`progress_scores.section = ${section}`).limit(1);
     const existingRecord = existingRecords[0];
 
     if (existingRecord) {
@@ -80,8 +80,8 @@ export default component$(() => {
     <div>
       <h1>Hello World!!!</h1>
       <ul>
-        {Object.entries(progressScore).map(([section, score]) => (
-          <li key={section}>{section}: {JSON.stringify(score)}</li>
+        {checklists.value.map((section: Section) => (
+          <li key={section.title}>{section.title}: {progressScore.value[section.title] || 0}</li>
         ))}
       </ul>
     </div>
