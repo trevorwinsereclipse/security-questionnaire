@@ -6,7 +6,7 @@ import { sql } from 'drizzle-orm';
 
 import { pgTable, serial, text, integer } from "drizzle-orm/pg-core";
 
-const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
+const [completed] = useLocalStorage('PSC_PROGRESS', {});
 
 const client = new Client({
     host: "web-database-1",
@@ -24,7 +24,7 @@ const answer_table = pgTable('answer_table', {
     column: integer('column'),
 });
 
-const saveAnswers = async () => {
+export const saveAnswers = async () => {
     try {
         await client.connect();
         
@@ -38,9 +38,11 @@ const saveAnswers = async () => {
                 await db.insert(answer_table).values({ topic, column });
             }
         }
+        console.log("Answers successfully saved.");
     } catch (err) {
         console.error('Error saving progress score:', err);
     } finally {
         await client.end();
     }
 };
+
