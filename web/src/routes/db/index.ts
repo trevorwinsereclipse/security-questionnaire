@@ -1,6 +1,6 @@
 import { saveAnswers } from "~/store/save-db"; 
 import { loadAnswers } from "~/store/load-db"; 
-import { component$, useSignal } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
 
 import { useLocalStorage } from "~/hooks/useLocalStorage";
 
