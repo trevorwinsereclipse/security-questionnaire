@@ -43,18 +43,15 @@ export default component$(() => {
     if (!checkedItems.value || !sections.length) {
       return { completed: 0, outOf: 0 };
     }
-    let totalItems = sections.reduce((total: number, section: Section) => total + section.checklist.length, 0);
+    const totalItems = sections.reduce((total: number, section: Section) => total + section.checklist.length, 0);
     let totalComplete = 0;
     sections.forEach((section: Section) => {
       section.checklist.forEach((item) => {
         const id = item.point.toLowerCase().replace(/ /g, '-');
         const isComplete = checkedItems.value[id];
         const isIgnored = ignoredItems.value[id];
-        if (isComplete) {
+        if (isComplete || isIgnored) {
           totalComplete++;
-        }
-        if (isIgnored) {
-          totalItems--;
         }
       });
     });

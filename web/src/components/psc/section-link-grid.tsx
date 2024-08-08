@@ -20,11 +20,12 @@ export default component$((props: { sections: Section[] }) => {
    * using completion data from local storage, and disregarding ignored items
    */
   const getPercentCompletion = $((section: Section): number => {
-    const id = (item: Checklist) => item.point.toLowerCase().replace(/ /g, '-')
-    const total = section.checklist.filter((item) => !ignored.value[id(item)]).length;
-    const done = section.checklist.filter((item) => checked.value[id(item)]).length;
-    return Math.round((done / total) * 100);
+    const id = (item: Checklist) => item.point.toLowerCase().replace(/ /g, '-');
+    const total = section.checklist.length;
+    const doneCount = section.checklist.filter((item) => checked.value[id(item)] || ignored.value[id(item)]).length;
+    return Math.round((doneCount / total) * 100);
   });
+
   
   // On load (in browser only), calculate and set completion data for sections
   useOnWindow('load', $(async () => {
@@ -35,7 +36,7 @@ export default component$((props: { sections: Section[] }) => {
     // Count of completed items, per section
     done.value = await Promise.all(props.sections.map(section => 
       section.checklist.filter(
-        (item) => checked.value[item.point.toLowerCase().replace(/ /g, '-')],
+        (item) => checked.value[item.point.toLowerCase().replace(/ /g, '-')] || ignored.value[item.point.toLowerCase().replace(/ /g, '-')],
       ).length
     ));
   }));
