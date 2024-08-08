@@ -22,7 +22,7 @@ export default component$(() => {
   const [ignoredItems] = useLocalStorage('PSC_IGNORED', {});
   // Progress score for sections
   const [progressScore] = useLocalStorage('PSC_PROGRESS_SCORE', {});
-
+  
   // Local storage for closing and ignoring the welcome dialog
   const [ignoreDialog, setIgnoreDialog] = useLocalStorage('PSC_CLOSE_WELCOME', false);
   // Store to hold calculated progress results
@@ -160,6 +160,13 @@ export default component$(() => {
   /**
    * Calculates the percentage of completion for each section
    */
+  useOnWindow('load', $(async () => {
+    sectionCompletion.value = await Promise.all(checklists.value.map(section => {
+      return calculateProgress([section]).then(
+        (progress) => Math.round(progress.completed / progress.outOf * 100)
+      );
+    }));
+  }));
 
 
   interface RadarChartData {
@@ -324,29 +331,31 @@ export default component$(() => {
         <canvas ref={radarChart} id="myChart"></canvas>
       </div>
       {/* <div class="flex justify-top flex-col items-center gap-6"> */}
-        <div class="rounded-box bg-front shadow-md w-96 p-4">
-          <h3 class="text-primary text-2xl">Your Scores</h3>
-            {checklists.value.map((section: Section) => (
-              <a 
-                href=""
-                key={section.slug} 
-                class={[
-                  "my-2 w-80 flex justify-between items-center",
-                  `hover:text-${section.color}-400`
-                  ]} 
-                data-tip={`Score: ${progressScore.value[section.title] || 0}%`}
-              >
-                <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-40">
-                  <Icon icon={section.icon} width={14} />
-                  {section.title}
-                </p>
-                <div class="progress w-36">
-                  <span 
-                    class={`block h-full transition bg-${section.color}-400`}
-                    style={`width: ${progressScore.value[section.title] || 0}%;`}></span>
-                </div>
-              </a>
-            ))}
+        <div class="flex justify-top flex-col items-center gap-6">
+          <div class="rounded-box bg-front shadow-md w-96 p-4">
+            <h3 class="text-primary text-2xl">Your Scores</h3>
+              {checklists.value.map((section: Section) => (
+                <a 
+                  href=""
+                  key={section.slug} 
+                  class={[
+                    "my-2 w-80 flex justify-between items-center",
+                    `hover:text-${section.color}-400`
+                    ]} 
+                  data-tip={`Score: ${progressScore.value[section.title] || 0}%`}
+                >
+                  <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-40">
+                    <Icon icon={section.icon} width={14} />
+                    {section.title}
+                  </p>
+                  <div class="progress w-36">
+                    <span 
+                      class={`block h-full transition bg-${section.color}-400`}
+                      style={`width: ${progressScore.value[section.title] || 0}%;`}></span>
+                  </div>
+                </a>
+              ))}
+            </div>
         </div>
       {/* </div> */}
     </div>

@@ -10,7 +10,7 @@ export default component$((props: { section: Section }) => {
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
   const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
   const [progressScore, setProgressScore] = useLocalStorage('PSC_PROGRESS_SCORE', {});
-
+  // console.log(completed);
   const sortState = useStore({ column: '', ascending: true });
   const checklist = useSignal<Checklist[]>(props.section.checklist);
 
@@ -144,7 +144,6 @@ export default component$((props: { section: Section }) => {
   };
 
   const { done, total, percent, disabled, score } = calculateProgress();
-  console.log(progressScore);
   return (
     <>
       <div class="flex flex-wrap justify-between items-center">
