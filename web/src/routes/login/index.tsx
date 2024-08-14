@@ -16,8 +16,8 @@ export default component$(() => {
   });
 
   return (
-    <div class="flex items-center justify-center min-h-screen bg-gray-900">
-      <div class="w-full max-w-md p-8 bg-gray-800 rounded shadow-md">
+    <div class="flex items-center justify-center min-h-screen">
+      <div class="w-full max-w-md p-8 rounded shadow-md">
         <h2 class="mb-4 text-2xl font-bold text-center text-white">Login</h2>
         <form preventdefault:submit onSubmit$={handleSubmit}>
           <div class="mb-4">
@@ -26,7 +26,7 @@ export default component$(() => {
             </label>
             <input
               type="text"
-              class="w-full px-4 py-2 border rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-4 py-2 text-white bg-gray-900 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={state.username}
               onInput$={(e) => (state.username = (e.target as HTMLInputElement).value)}
             />
@@ -37,7 +37,7 @@ export default component$(() => {
             </label>
             <input
               type="password"
-              class="w-full px-4 py-2 border rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-4 py-2 text-white bg-gray-900 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={state.password}
               onInput$={(e) => (state.password = (e.target as HTMLInputElement).value)}
             />

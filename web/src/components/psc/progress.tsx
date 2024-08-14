@@ -333,7 +333,7 @@ export default component$(() => {
             <h3 class="text-primary text-2xl">Your Scores</h3>
               {checklists.value.map((section: Section) => (
                 <a 
-                  href=""
+                  href={`/checklist/${section.slug}`}
                   key={section.slug} 
                   class={[
                     "my-2 w-80 flex justify-between items-center",
@@ -341,10 +341,11 @@ export default component$(() => {
                     ]} 
                   data-tip={`Score: ${progressScore.value[section.title] || 0}%`}
                 >
-                  <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-40">
+                  <p class="text-sm m-0 flex items-center text-left gap-1 text-nowrap overflow-hidden max-w-10">
                     <Icon icon={section.icon} width={14} />
-                    {section.title}
+                    
                   </p>
+                  {section.title}
                   <div class="progress w-36">
                     <span 
                       class={`block h-full transition bg-${section.color}-400`}
