@@ -1,14 +1,17 @@
 import { component$, useStore, $ } from '@builder.io/qwik';
 
+
+
 export default component$(() => {
   const state = useStore({
     username: '',
     password: '',
     error: '',
   });
+  
 
   const handleSubmit = $(() => {
-    if (state.username === 'user' && state.password === 'password') {
+    if (checkUser(state.username, state.password)) {
       alert('Login successful!');
     } else {
       state.error = 'Invalid username or password';
@@ -17,7 +20,7 @@ export default component$(() => {
 
   return (
     <div class="flex items-center justify-center min-h-screen">
-      <div class="w-full max-w-md p-8 rounded shadow-md">
+      <div class="w-full max-w-md p-8 rounded bg-front">
         <h2 class="mb-4 text-2xl font-bold text-center text-white">Login</h2>
         <form preventdefault:submit onSubmit$={handleSubmit}>
           <div class="mb-4">

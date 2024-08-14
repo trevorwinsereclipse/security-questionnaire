@@ -4,7 +4,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
 import { sql } from 'drizzle-orm';
 import { server$ } from '@builder.io/qwik-city';
-import { pgTable, pgSchema, serial, text, integer } from "drizzle-orm/pg-core";
+import { pgSchema, serial, text, integer } from "drizzle-orm/pg-core";
 
 const client = new Client({
     host: "web-database-1",
@@ -30,7 +30,7 @@ export const answer_table = mySchema.table('answer_table', {
 export const saveAnswers = server$(async function(completed) {
     try {
         await client.connect();
-        
+        console.log(completed.value)
         for (const [topic, column] of Object.entries(completed.value) as [string, number][]) {
             const existingRecords = await db.select().from(answer_table).where(sql`answer_table.topic = ${topic}`).limit(1);
             const existingRecord = existingRecords[0];
