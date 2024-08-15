@@ -1,5 +1,3 @@
-import { useLocalStorage } from "~/hooks/useLocalStorage";
-import type { Section, Checklist } from '../../types/PSC';
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
 import { sql } from 'drizzle-orm';
@@ -23,7 +21,7 @@ export const colors = mySchema.enum('colors', ['red', 'green', 'blue']);
 export const answer_table = mySchema.table('answer_table', {
     id: serial('id').primaryKey(),
     topic: text('topic'),
-    column: integer('column'),
+    col: integer('col'),
   });
 
 
@@ -31,14 +29,14 @@ export const saveAnswers = server$(async function(completed) {
     try {
         await client.connect();
         console.log(completed.value)
-        for (const [topic, column] of Object.entries(completed.value) as [string, number][]) {
+        for (const [topic, col] of Object.entries(completed.value) as [string, number][]) {
             const existingRecords = await db.select().from(answer_table).where(sql`answer_table.topic = ${topic}`).limit(1);
             const existingRecord = existingRecords[0];
 
             if (existingRecord.id) {
-                await db.update(answer_table).set({ column }).where(sql`answer_table.topic = ${topic}`);
+                await db.update(answer_table).set({ col }).where(sql`answer_table.topic = ${topic}`);
             } else {
-                await db.insert(answer_table).values({ topic, column });
+                await db.insert(answer_table).values({ topic, col });
             }
         }
         console.log("Answers successfully saved.");
