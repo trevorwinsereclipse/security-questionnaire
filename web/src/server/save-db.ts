@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import { sql } from 'drizzle-orm';
-import { pgSchema, serial, text, integer } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, integer } from 'drizzle-orm/pg-core';
 
 const client = new Client({
   host: 'web-database-1',
@@ -12,14 +12,18 @@ const client = new Client({
 });
 
 const db = drizzle(client);
-export const mySchema = pgSchema('my_schema');
-
-export const colors = mySchema.enum('colors', ['red', 'green', 'blue']);
-export const answer_table = mySchema.table('answer_table', {
-  id: serial('id').primaryKey(),
-  topic: text('topic'),
-  col: integer('col'),
-});
+const user_table = pgTable('user_table', {
+    id: serial('id').primaryKey(),
+    username: text('username'),
+    password: text('password'),
+  });
+  
+  const answer_table = pgTable('answer_table', {
+    id: serial('id').primaryKey(),
+    topic: text('topic'),
+    col: integer('col'),
+    user_id: integer('user_id').references(() => user_table.id),
+  });
 
 export async function saveAnswers(completed: any) {
   try {
