@@ -13,12 +13,25 @@ This document details the inner workings of the security questionnaire project. 
 
 Currently, the project does not rely on the database so for faster developer purposes, running the command `yarn dev` can be done for faster updates.
 
+## Changes
+
+### Dependencies
+
+Initially, the project relied on the **Vercel** web hosting service and had integration to support that. Now, the project is run via a docker container so that it can in the future be deployed anywhere.
+
+Another dependency that was added recently was the Drizzle ORM Kit for easier database storage and access. The Drizzle ORM Kit is not the only choice and if difficulties with their lack of documentation or limited functionality arise then other options should be considered.
+
+PostgreSQL was decided for the database to work in tandem with ORM's such as Drizzle. However, the decision to store data in this way may change based on the current architecture.
+
+
 ## File Structure
 The project follows the Qwik format. The main content of the project is within the web folder. However, it is important to mention what lies outside the web folder first:
+
 - Articles
     - This is a relic from the original project. To understand the format of 'Articles' on the webpage, they remain for future reference.
 - [LICENSE](https://github.com/trevorwinsereclipse/security-questionnaire/blob/main/LICENSE)
     - This is the updated MIT license with the added Eclipse Foundation attribution.
+
 ### The Web Folder
 The web folder contains the bulk of the project. 
 
@@ -33,3 +46,5 @@ The web folder contains the bulk of the project.
 1. 
 
 ### Plan
+
+
