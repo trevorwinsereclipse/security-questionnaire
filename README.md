@@ -23,3 +23,13 @@ The project follows the Qwik format. The main content of the project is within t
 The web folder contains the bulk of the project. 
 
 ## Project Structure
+
+### Features
+
+1. 
+
+### Intentions
+
+1. 
+
+### Plan
