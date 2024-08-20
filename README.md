@@ -8,7 +8,7 @@ This document details the inner workings of the security questionnaire project. 
 1. Ensure you have Node.js installed and install yarn via the command: `npm install -g yarn`
 1. Install the required dependencies: `yarn install`
 1. Open Docker Desktop and build your image: `docker build -t your-image-tag`
-1. On Docker Desktop, verify that the three containers: webapp, pgadmin, and database are running.
+1. On Docker Desktop, verify that the three containers: webapp, pgadmin, and database are running. If they are not then `docker compose up -d` should do the trick.
 1. Connect to the website via localhost:5000
 
 Currently, the project does not rely on the database so for faster developer purposes, running the command `yarn dev` can be done for faster updates.
