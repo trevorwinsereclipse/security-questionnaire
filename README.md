@@ -36,10 +36,25 @@ PostgreSQL was decided for the database to work in tandem with ORM's such as Dri
 
 ### Frontend
 
-The original [Digital Defense](https://digital-defense.io/) website is noticeably different from the current project. The sections were simplified to correspond to the Eclipse Foundation's security best practices: 
+The current project is noticeably different from the original [Digital Defense](https://digital-defense.io/) website. 
+
+The sections were simplified to correspond to the Eclipse Foundation's security best practices: 
 
 1. **Accounts**
 1. **Machine**
 1. **Environment**
 
-###
+Various features were removed as they no longer fit the needs of the website:
+
+1. Levels
+    - The original website had three levels: Essential, Optional, and Advanced.
+    - The practices included in the current project are all essential, but a lot of the levels functionality was kept in but is not shown
+2. Filters
+    - The original website had a filter for completion and level.
+    - The filter code is still present in [web/src/components/psc/checklist-table.tsx](https://github.com/trevorwinsereclipse/security-questionnaire/blob/main/web/src/components/psc/checklist-table.tsx)
+1. Sorting by completion 
+
+
+### Backend
+
+The database
