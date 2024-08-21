@@ -44,17 +44,31 @@ The sections were simplified to correspond to the Eclipse Foundation's security 
 1. **Machine**
 1. **Environment**
 
-Various features were removed as they no longer fit the needs of the website:
+### Backend
+
+The database
+
+### Removals
 
 1. Levels
     - The original website had three levels: Essential, Optional, and Advanced.
     - The practices included in the current project are all essential, but a lot of the levels functionality was kept in but is not shown
-2. Filters
+1. Filters
     - The original website had a filter for completion and level.
     - The filter code is still present in [web/src/components/psc/checklist-table.tsx](https://github.com/trevorwinsereclipse/security-questionnaire/blob/main/web/src/components/psc/checklist-table.tsx)
-1. Sorting by completion 
+1. Sorting
+    - The original website allowed users to sort section rows by completion, advice, and level.
+    - Now users may only sort by advice, otherwise known as topic. As the number of topics and statements decreased, the need for sorting seemed less apparent.
+1. Articles
+    - Articles are an artifact from the original website that acted as a place for information that does not fit the scope of the website.
 
+### Additions
 
-### Backend
-
-The database
+1. Progress Score
+    - A new score that portrays the frequency the user accomplishes security practices.
+    - A full point is awarded if they answer Always.
+    - A half point is awarded if they answer Sometimes.
+    - No point is awarded if they answer Never or Ignore.
+    - Each section has an independent score.
+    - It is displayed in tandem with the completion percentage on the home page and the section page.
+1. 
