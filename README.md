@@ -32,6 +32,8 @@ The web folder contains the bulk of the project.
     - This folder contains remnants from the old project such as the banner and favicon images, and manifest.json.
     - Most notably, the current [checklist](https://github.com/trevorwinsereclipse/security-questionnaire/blob/main/web/public/personal-security-checklist.yml) is in this folder. The format for adding a new section or statement is straightforward from the format of the file.
 
+---
+
 #### /src
 The src folder contains the Qwik code for the project. Most of the page content can be found here.
 - [/components](https://github.com/trevorwinsereclipse/security-questionnaire/blob/main/web/src/components)
@@ -52,6 +54,9 @@ The src folder contains the Qwik code for the project. Most of the page content 
     - The styles folder has the predefined css that is used for a consistent style across the website.
 - [/types](https://github.com/trevorwinsereclipse/security-questionnaire/blob/main/web/src/types)
     - The types folder defines custom classes such as Section and Checklist.
+
+---
+
 - [/tmp](https://github.com/trevorwinsereclipse/security-questionnaire/blob/main/web/src/tmp)
     - The tmp folder should not be used for any development purposes.
 
