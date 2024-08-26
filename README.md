@@ -121,3 +121,10 @@ The project has a lot of little things that may inhibit development that I belie
 - **useLocalStorage** - Initially, the project was built for personal security progress tracking. Thus, all of the data was stored locally. Accessing these variables can only be done on or after window load.
 
 - **Digital Defense** - The original project had a similar purpose, however their care for relics such as the articles section are not necessary for this project as all information provided should be in accordance with the Eclipse Foundation's current best security practices. If something is outdated, it should be properly updated or deprecated.
+
+## Plans
+This section details the hopes for the project that are not quite there yet. Please use this as a guide for future development goals.
+
+1. Remove Remnants
+    -
+    Remnants from the original project are hidden throughout this project. Any mention of "Digital Defense" should be deprecated or updated to "Security Questionnaire"
