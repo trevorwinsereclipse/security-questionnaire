@@ -43,7 +43,7 @@ export default component$((props: { sections: Section[] }) => {
 
   return (
     <div class={[styles.container, 'grid',
-      'mx-auto gap-7', 'xl:max-w-7xl',
+      'mx-auto mt-8 px-4 gap-7', 'xl:px-10 xl:max-w-7xl',
       'transition-all', 'max-w-6xl w-full']}>
       {props.sections.map((section: Section, index: number) => (                   
         <a key={section.slug}
