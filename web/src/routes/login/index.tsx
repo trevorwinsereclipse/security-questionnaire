@@ -1,5 +1,5 @@
 import { component$, useStore, $ } from '@builder.io/qwik';
-import { checkUser } from "~/store/load-db"; 
+// import { checkUser } from "~/server/load-db"; 
 export default component$(() => {
   const state = useStore({
     username: '',
@@ -8,12 +8,13 @@ export default component$(() => {
   });
   
 
+  // TODO: Implement the database check & call it here.
   const handleSubmit = $(async () => {
-    if (await checkUser(state.username, state.password)) {
+    // if (await checkUser(state.username, state.password)) {
       alert('Login successful!');
-    } else {
-      state.error = 'Invalid username or password';
-    }
+    // } else {
+    //   state.error = 'Invalid username or password';
+    // }
   });
 
   return (
