@@ -20,7 +20,7 @@ jobs:
     steps:
     - name: Qwik Build
       id: qwik-build
-      uses: danielbayley/qwik-build@v1.0.0
+      uses: trevorwinsereclipse/qwik-build@v1.0.0
       with:
         branch: main
         working-dir: ./web
