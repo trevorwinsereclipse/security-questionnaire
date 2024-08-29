@@ -23,5 +23,5 @@
     }
   },
   "files": ["./.eslintrc.cjs"],
-  "include": ["src", "./*.d.ts", "./*.config.ts", "scripts/seed.js", "../../vite.config.mts", "adapters/static/vite.config.mts", "vite.config.mts"]
+  "include": ["src", "./*.d.ts", "./*.config.ts", "scripts/seed.js", "../../vite.config.ts", "vite.config.ts"]
 }
