@@ -42,12 +42,24 @@ export const RouterHead = component$(() => {
         <link key={l.key} {...l} />
       ))}
 
-      {head.styles.filter(Boolean).map((s) => (
-        <style key={s.key} {...s.props} dangerouslySetInnerHTML={s.style} />
+      {head.styles.map((s) => (
+        <style
+          key={s.key}
+          {...s.props}
+          {...(s.props?.dangerouslySetInnerHTML
+            ? {}
+            : { dangerouslySetInnerHTML: s.style })}
+        />
       ))}
 
-      {head.scripts.filter(Boolean).map((s) => (
-        <script key={s.key} {...s.props} dangerouslySetInnerHTML={s.script} />
+      {head.scripts.map((s) => (
+        <script
+          key={s.key}
+          {...s.props}
+          {...(s.props?.dangerouslySetInnerHTML
+            ? {}
+            : { dangerouslySetInnerHTML: s.script })}
+        />
       ))}
       <script defer data-domain="digital-defense.io" src="https://no-track.as93.net/js/script.js"></script>
     </>
