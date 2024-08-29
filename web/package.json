@@ -13,8 +13,7 @@
     "lint": "eslint \"src/**/*.ts*\" -f compact",
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --mode ssr",
-    "qwik": "qwik",
-    "seed": "node -r dotenv/config ./scripts/seed.js"
+    "qwik": "qwik"
   },
   "devDependencies": {
     "@builder.io/qwik-city": "^1.1.4",
