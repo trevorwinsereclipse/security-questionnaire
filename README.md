@@ -140,3 +140,7 @@ This section details the hopes for the project that are not quite there yet. Ple
     2FA is recommended and may become required for the login process. 
     
     As the user answers statements on the page, the database should store those changes. Currently "completed" questions and "ignored" questions are stored separately.
+
+1. Fix build
+    -
+    Currently, the workflow `static.yml` attempts to build the site on commit. However, part of the build process runs an unknown `vite.config.ts` that does not exist in the project. The reason the build fails is because it attempts to import vite.config rather than vite.config.mts. The website does not have a working build, so this should be prioritized before any other changes.
